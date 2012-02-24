@@ -1,7 +1,6 @@
 package SESI.chip8.utils.screens;
 
 import SESI.chip8.utils.*;
-import SESI.chip8.screens.*;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

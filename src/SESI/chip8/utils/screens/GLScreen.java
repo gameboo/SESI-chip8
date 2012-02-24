@@ -1,7 +1,6 @@
 package SESI.chip8.utils.screens;
 
 import SESI.chip8.utils.*;
-import SESI.chip8.screens.*;
 
 import android.opengl.GLSurfaceView;
 import android.content.Context;
@@ -16,7 +15,7 @@ import android.opengl.GLU;
 
 import android.util.Log; //debug purpose
 
-class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, Chip8Screen
+public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, Chip8Screen
 {
     
     /////////////

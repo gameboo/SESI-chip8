@@ -1,7 +1,6 @@
 package SESI.chip8.utils.screens;
 
 import SESI.chip8.utils.*;
-import SESI.chip8.screens.*;
 
 import android.view.View;
 import android.content.Context;
@@ -10,7 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log; //debug purpose
 
-class BasicScreen extends View implements Chip8Screen
+public class BasicScreen extends View implements Chip8Screen
 {
     
     /////////////
@@ -38,11 +37,6 @@ class BasicScreen extends View implements Chip8Screen
        	    for(int x = 0;  x < _nbPixelWidth; x++)
        	    {
        	        _colorMatrix[x][y] = Color.BLACK;
-                // tests
-                if(x == 0 && y == 0) _colorMatrix[x][y] = Color.RED;
-                if(x == _nbPixelWidth-1 && y == 0) _colorMatrix[x][y] = Color.RED;
-                if(x == 0 && y == _nbPixelHeight-1) _colorMatrix[x][y] = Color.RED;
-                if(x == _nbPixelWidth-1 && y == _nbPixelHeight-1) _colorMatrix[x][y] = Color.RED;
        	    }
        	}
     }
@@ -84,10 +78,12 @@ class BasicScreen extends View implements Chip8Screen
        	        c.drawRect(left, top, right, bottom, paint);
        	        //c.drawRect(left, top, (10*x)+10, (10*y)+10, paint);
                 // tests
+                /*
                 if(x == 0 && y == 0) _colorMatrix[x][y] = Color.RED;
                 if(x == _nbPixelWidth-1 && y == 0) _colorMatrix[x][y] = Color.RED;
                 if(x == 0 && y == _nbPixelHeight-1) _colorMatrix[x][y] = Color.RED;
                 if(x == _nbPixelWidth-1 && y == _nbPixelHeight-1) _colorMatrix[x][y] = Color.RED;
+                */
        	    }
        	}
     }

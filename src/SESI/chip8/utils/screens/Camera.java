@@ -1,7 +1,6 @@
 package SESI.chip8.utils.screens;
 
 import SESI.chip8.utils.*;
-import SESI.chip8.screens.*;
 
 import android.opengl.GLSurfaceView;
 import android.content.Context;
