@@ -1,3 +1,15 @@
 SESI EJAVA projet
 
-Android app for chip 8 emulation
+Android app for chip8 emulation
+
+
+Pour compiler, il est nécessaire d'avoir :
+
+- le android sdk correctement installé (vérifier que ANDROID_SDK_HOME est correctement positionée, et que PATH pointe vers le dossier tools du sdk)
+- java correctement installé
+- gnumake
+
+Un simple Make doit faire l'affaire :)
+Attention, le Makefile utilise une variable ANDROID_API_LVL (7 par défaut). Si la version du sdk utilisée est différente, il est nécessaire de faire le changement approprié.
+
+Wali walou +++
