@@ -20,7 +20,7 @@ all:
 	mkdir -p $(DEX_DIR)
 	$(JAVA_COMPILER) -classpath $(ANDROID_JAR) -d $(CLASS_DIR) $(JAVA_SRC)
 	dx --dex --output=$(DEX_DIR)/$(DEX_FILE) $(CLASS_DIR)
-	aapt p -M $(ANDROID_MANIFEST) -I $(ANDROID_JAR) -F $(RES_FILE)
+	aapt p -f -M $(ANDROID_MANIFEST) -I $(ANDROID_JAR) -F $(RES_FILE)
 	apkbuilder $(BIN_DIR)/$(APP_NAME).apk -f $(DEX_DIR)/$(DEX_FILE) -z $(RES_FILE)
 
 .PHONY: clean

@@ -14,8 +14,9 @@ public class SESIChip8 extends Activity
     {
         super.onCreate(savedInstanceState);
 
-        //GLScreen screen = new GLScreen(this);
-        BasicScreen screen = new BasicScreen(this);
+        //GLScreenTest screen = new GLScreenTest(this);
+        GLScreen screen = new GLScreen(this);
+        //BasicScreen screen = new BasicScreen(this);
         setContentView(screen);
 
         byte chip8_fontset[][] =

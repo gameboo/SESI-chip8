@@ -13,11 +13,9 @@ import java.nio.FloatBuffer;
 
 import android.opengl.GLU;
 
-import android.util.FloatMath;
-
 import android.util.Log; //debug purpose
 
-public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, Chip8Screen
+public class GLScreenTest extends GLSurfaceView implements GLSurfaceView.Renderer, Chip8Screen
 {
     
     /////////////
@@ -48,7 +46,7 @@ public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, C
     // constructeur //
     //////////////////
     
-    public GLScreen (Context context)
+    public GLScreenTest (Context context)
     {
         super(context);
         setRenderer(this);
@@ -68,7 +66,7 @@ public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, C
                 _pixel[i][j].setPos(x,y,z);
                 //_pixel[i][j].setRGBA(0.0f,0.0f,0.0f,0.0f);
                 _pixel[i][j].setRGBA((i%2)*0.8f,(j%3)*0.2f,((i*j)%4)*0.5f,1.0f); // pour tester
-                _pixel[i][j].setWH(1.0f, 1.0f); // pour tester
+                _pixel[i][j].setWH(_pixelWidth, _pixelHeight); // pour tester
             }
         }
         // init camera
@@ -100,11 +98,10 @@ public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, C
                         case MotionEvent.ACTION_MOVE:
                                curx = event.getX();
                                cury = event.getY();
-                               _camera.lookAround(0.05f*(curx-oldx), -0.05f*(cury-oldy),0.05f*(curx-oldx));
+                               _camera.lookAround(0.05f*(curx-oldx), -0.05f*(cury-oldy), 0.0f);
                            break;
                         case MotionEvent.ACTION_POINTER_UP:
                            // multitouch!! - touch down
-                               _camera.lookAround(0.0f,0.0f,0.0f);
                            break;
                     }
                     oldx = curx;
@@ -145,17 +142,30 @@ public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, C
     
     public void onDrawFrame(GL10 gl)
     {
-        //gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 	gl.glLoadIdentity();
         _camera.refresh(gl);
-        for(int j = 0; j < _height; j++) // for each line
+
+        Pixel toto = new Pixel();
+        toto.setRGBA(1.0f,0.5f,0.4f,1.0f);
+        toto.setPos(-1.0f,0.0f,0.0f);
+        toto.setWH(_pixelHeight,_pixelWidth);
+	toto.draw(gl);
+
+        Pixel tata = new Pixel();
+        tata.setRGBA(0.0f,1.0f,0.4f,1.0f);
+        tata.setPos(0.0f,0.0f,0.0f);
+	tata.draw(gl);
+        
+	/*
+	for(int j = 0; j < _height; j++) // for each line
         {
             for(int i = 0; i < _width; i++) // for each column
             {
                 _pixel[i][j].draw(gl);
             }
         }
+	*/
     }
 
     /////////////////////////////
