@@ -32,7 +32,7 @@ class Pixel
     }
 
     // instance members //
-    
+    private boolean drawing;
     private float _x, _y, _z;
     private float _ux, _uy, _uz;
     private float _vx, _vy, _vz;
@@ -47,6 +47,17 @@ class Pixel
         _vx = 0.0f; _vy = 0.0f; _vz = 1.0f; //z-axis
         _width = 1.0f; _height = 1.0f;
 	_red = 0.0f; _green = 0.0f; _blue = 0.0f; _alpha = 0.0f;
+	drawing = false;
+    }
+
+    public boolean getDrawingState()
+    {
+	return drawing;
+    }
+    
+    public void setDrawingState(boolean d)
+    {
+	drawing = d;
     }
 
     public void setRGBA(float r, float g, float b, float a)
@@ -93,11 +104,10 @@ class Pixel
         //gl.glColor4f(1.0f, 0.5f, 0.4f, 0.9f);
         gl.glScalef(0.5f*_width, 0.5f*_height, 1.0f);
         gl.glColor4f(_red, _green, _blue, _alpha);
-
         // Front
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-/* 
-        // Right - Rotate 90 degree about y-axis
+        
+	// Right - Rotate 90 degree about y-axis
         gl.glRotatef(90.0f, _ux, _uy, _uz);
         gl.glColor4f(0.0f,0.0f,1.0f,1.0f);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);

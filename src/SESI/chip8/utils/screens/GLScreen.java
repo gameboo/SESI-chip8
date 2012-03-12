@@ -125,8 +125,21 @@ public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, C
     public void onSurfaceCreated(GL10 gl, EGLConfig config)
     {
         gl.glEnable(GL10.GL_DEPTH_TEST);  // Active le test de profondeur
- 	//gl.glEnable(GL10.GL_LIGHTING);    // Active l'éclairage
- 	//gl.glEnable(GL10.GL_LIGHT0);
+	
+	// gestion de la lumière
+	float [] ambient = {0.0f,0.0f,0.0f, 1.0f};
+	float [] diffuse = {1.0f,1.0f,1.0f, 1.0f};
+	float [] specular = {1.0f,1.0f,1.0f, 1.0f};
+	float [] position = {1.0f,1.0f,0.0f, 0.0f};
+	gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, FloatBuffer.wrap(ambient));
+	gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, FloatBuffer.wrap(diffuse));
+	gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, FloatBuffer.wrap(specular));
+	//gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_EMISSIVE, {1.0f, 1.0f, 1.0f});
+	gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, FloatBuffer.wrap(position));
+ 	gl.glEnable(GL10.GL_LIGHT0);
+        // enable color tracking
+        gl.glEnable(GL10.GL_COLOR_MATERIAL);
+        //gl.glColorMaterial(GL10.GL_FRONT, GL10.GL_AMBIENT_AND_DIFFUSE);
 
         gl.glClearColor(0, 0, 0, 1.0f);
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
@@ -153,7 +166,10 @@ public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, C
         {
             for(int i = 0; i < _width; i++) // for each column
             {
-                _pixel[i][j].draw(gl);
+		if(_pixel[i][j].getDrawingState() == true)
+		{
+                    _pixel[i][j].draw(gl);
+		}
             }
         }
     }
@@ -170,7 +186,8 @@ public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, C
         {
             for(int i = 0; i < _width; i++) // for each column
             {
-                _pixel[i][j].setRGBA(0.0f, 0.0f, 0.0f, 1.0f);
+                //_pixel[i][j].setRGBA(0.0f, 0.0f, 0.0f, 1.0f);
+                _pixel[i][j].setDrawingState(false);
             }
         }
     }
@@ -188,9 +205,15 @@ public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, C
                 {
                     if(i >= _width) break; // overflow par la droite
                     if((currentSpriteLine & (1 << (7-(i-x)))) == 0) // si msb = leftmost pixel
-                        _pixel[i][j].setRGBA(0.0f,0.0f,0.0f,1.0f);
+		    {
+                        //_pixel[i][j].setRGBA(0.0f,0.0f,0.0f,1.0f);
+                	_pixel[i][j].setDrawingState(false);
+		    }
                     else
+		    {
+                	_pixel[i][j].setDrawingState(true);
                         _pixel[i][j].setRGBA(1.0f,1.0f,1.0f,1.0f);
+		    }
                 }
             }
         }
