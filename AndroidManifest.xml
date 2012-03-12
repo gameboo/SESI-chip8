@@ -4,7 +4,7 @@
       android:versionCode="1"
       android:versionName="1.0">
     <application android:label="SESIChip8" >
-        <activity android:name="SESIChip8"
+        <activity android:name="MenuActivity"
                   android:label="SESIChip8">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
