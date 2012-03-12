@@ -1,15 +1,18 @@
 <?xml version="0.9" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="SESI.chip8"
-      android:versionCode="1"
-      android:versionName="1.0">
+    package="SESI.chip8"
+    android:versionCode="1"
+    android:versionName="1.0">
     <application android:label="SESIChip8" >
         <activity android:name="MenuActivity"
-                  android:label="SESIChip8">
+            android:label="MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
-</manifest> 
+        <activity 
+            android:name="SESIChip8"
+            android:label="SESIChip8" />
+        </application>
+    </manifest> 

@@ -122,20 +122,18 @@ class Pixel
         gl.glColor4f(1.0f,0.0f,0.0f,1.0f);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
  
- /*  
+   
         // Bottom - Rotate 90 degree about x-axis
         gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-        gl.glColor4f(colors[4][0], colors[4][1], colors[4][2], colors[4][3]);
+        gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
         
         // Top - Rotate another 180 degree about x-axis
         gl.glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
-        gl.glColor4f(colors[5][0], colors[5][1], colors[5][2], colors[5][3]);
+        gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
  
-        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-        gl.glDisable(GL10.GL_CULL_FACE);
- */  
+   
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
         gl.glPopMatrix();
 /* 
