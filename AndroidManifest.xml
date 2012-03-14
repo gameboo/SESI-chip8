@@ -14,5 +14,8 @@
         <activity 
             android:name="SESIChip8"
             android:label="SESIChip8" />
+        <activity 
+            android:name="GameActivity"
+            android:label="GameActivity" />
         </application>
     </manifest> 

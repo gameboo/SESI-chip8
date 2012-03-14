@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="fill_parent"
-android:orientation="vertical" >
-
-<EditText
-    android:id="@+id/editText1"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="@string/pacourir" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-    <requestFocus />
-</EditText>
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/pacourir" >
 
-<Spinner
-    android:id="@+id/spinner1"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+        <requestFocus />
+    </EditText>
 
-<Gallery
-    android:id="@+id/gallery1"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-<Button
-    android:id="@+id/button1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Button" />
+    <Gallery
+        android:id="@+id/gallery1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-                                                                                                                                                        </LinearLayout>
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
+</LinearLayout>

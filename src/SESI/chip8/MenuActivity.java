@@ -16,7 +16,8 @@ public class MenuActivity extends Activity {
             Button next = (Button) findViewById(R.id.button1);
             next.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    Intent myIntent = new Intent(view.getContext(), SESIChip8.class);
+                    Intent myIntent = new Intent(view.getContext(), GameActivity.class);
+                    //Intent myIntent = new Intent(view.getContext(), SESIChip8.class);
                     startActivityForResult(myIntent, 0);
                 }
 
