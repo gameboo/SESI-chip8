@@ -14,19 +14,15 @@
     </EditText>
 
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/screenSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Gallery
-        android:id="@+id/gallery1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+		android:prompt="@string/screenPrompt" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/buttonGo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="Go!" />
 
 </LinearLayout>
