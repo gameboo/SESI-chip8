@@ -7,9 +7,11 @@ import android.widget.Button;
 import android.app.Activity;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
-
-public class MenuActivity extends Activity
+public class MenuActivity extends Activity implements OnItemSelectedListener
 {
 		public void onCreate(Bundle savedInstanceState)
 		{
@@ -37,5 +39,15 @@ public class MenuActivity extends Activity
 								}
 
 								});
+		}
+
+		public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
+		{
+				// Do something
+		}
+
+		public void onNothingSelected(AdapterView parent)
+		{
+				// Do nothing.
 		}
 }
