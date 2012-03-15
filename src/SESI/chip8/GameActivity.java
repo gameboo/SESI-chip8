@@ -2,6 +2,7 @@ package SESI.chip8;
 
 import SESI.chip8.utils.screens.*;
 import SESI.chip8.utils.*;
+import SESI.chip8.simu.*;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,8 +28,8 @@ public class GameActivity extends Activity
 
 				View screen;
 				//if
-				//screen = new BasicScreen(this);
-				screen = new GLScreen(this);
+				screen = new BasicScreen(this);
+				//screen = new GLScreen(this);
 				params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
 				screen.setLayoutParams(params);
 
@@ -46,6 +47,7 @@ public class GameActivity extends Activity
 				setContentView(lay);
 
 				// tests //
+				Chip8Simu simu = new Chip8Simu((Chip8Screen)screen,input) ;
 
 				byte chip8_fontset[][] =
 				{ 
@@ -68,15 +70,16 @@ public class GameActivity extends Activity
 				};
 
 				Sprite[] sprite = new Sprite[16];
-				for(int i = 0; i < 16; i++)
-				{
+				// for(int i = 0; i < 16; i++)
+				// {
 						/*
 						   sprite[i] = new Sprite(5);
 						   sprite[i].setMatrix(chip8_fontset[i]);
 						 */
-						sprite[i] = new Sprite(chip8_fontset[i]);
-						((Chip8Screen)screen).drawSprite((i*8)%(64-8),(i%4)*5, sprite[i]);
-				}
+						// sprite[i] = new Sprite(chip8_fontset[i]);
+						// ((Chip8Screen)screen).drawSprite((i*8)%(64-8),(i%4)*5, sprite[i]);
+				// }
 				// end tests //
+				
 		}
 }
