@@ -34,13 +34,20 @@ AAPTERIES:$(ANDROID_MANIFEST)
 	mkdir -p $(DEX_DIR)
 	aapt p -f -M $(ANDROID_MANIFEST) -S $(RES_DIR) -J $(BUILD_DIR) -I $(ANDROID_JAR) -F $(RES_OUTPUT_FILE)
 
+startadb:
+	sudo $(ADB) start-server
 
-
-emu:all
+emu:
 	$(ADB) -e install $(BUILD_DIR)/$(APP_NAME).apk
 
 remu:
 	$(ADB) -e uninstall $(PACKAGE)
+
+dev:
+	$(ADB) -d install $(BUILD_DIR)/$(APP_NAME).apk
+
+rdev:
+	$(ADB) -d uninstall $(PACKAGE)
 	
 
 
