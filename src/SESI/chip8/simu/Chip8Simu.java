@@ -3,6 +3,7 @@ package SESI.chip8.simu ;
 import SESI.chip8.utils.Chip8Input ;
 import SESI.chip8.utils.Chip8Screen ;
 import SESI.chip8.utils.Sprite ;
+import java.util.TimerTask ;
 
 public class Chip8Simu
 {
@@ -27,19 +28,56 @@ public class Chip8Simu
 		{(byte)0x80},  // pixel gauche
 		{(byte)0xFF}  // ligne pleine
 	};
+	private Sprite OK = new Sprite(5) ;
+	private Sprite ERR1 = new Sprite(5) ;
+	private Sprite ERR2 = new Sprite(5) ;
+	private Sprite ERR3 = new Sprite(5) ;
+	private int _chip8time = 0 ;
+	private Chip8Screen _screen ;
+
 	public Chip8Simu(Chip8Screen screen, Chip8Input kb)
 	{
-		Sprite test = new Sprite(1) ;
-		Sprite test2 = new Sprite(1) ;
-		test.setMatrix(chip8_fontset[0x10]);
-		test2.setMatrix(chip8_fontset[0x11]);
-		for (int i = 0;i<32;i++)
+
+		OK.setMatrix(chip8_fontset[1]);
+		ERR1.setMatrix(chip8_fontset[10]);
+		ERR2.setMatrix(chip8_fontset[11]);
+		ERR3.setMatrix(chip8_fontset[12]);
+
+		_chip8time = 0 ;
+		_screen = screen ;
+	}
+	
+/*		while (i<64)
 		{
-			screen.drawSprite(i,i, test);
-			screen.drawSprite(0,i, test);
-			screen.drawSprite(i,0, test2);
+			i++ ;
+			try
+			{
+				//	Thread.currentThread().sleep(1000) ;
+				wait(300) ;
+			}
+			catch (IllegalArgumentException e){ screen.drawSprite(0,5, ERR1);}
+			catch (IllegalMonitorStateException e){ screen.drawSprite(0,10, ERR2);}
+			catch (InterruptedException e){ screen.drawSprite(0,15, ERR3);}
+			screen.drawSprite(0,0, OK);
+		
 		}
 
+*/
+
+	public void step1()
+	{
+		if (_chip8time == 0) {
+			_screen.drawSprite(3,3, ERR1);
+		} else {
+			_screen.drawSprite(3,3, ERR2);
+		}
+		_chip8time = (_chip8time + 1) % 1 ;
+	}
+		
+	public void step2()
+	{
+		_screen.drawSprite(0,5, ERR2);
+		_chip8time++;
 	}
 
 
