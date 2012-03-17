@@ -12,10 +12,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.content.res.AssetManager;
 
 import java.util.Timer ;
 import java.util.TimerTask ;
+import java.io.InputStream;
+import java.io.IOException;
 
+//debug
+import android.util.Log;
 
 public class GameActivity extends Activity
 {
@@ -25,6 +30,20 @@ public class GameActivity extends Activity
 				// récupération des info de MenuActivity
 				Bundle myBunble  = this.getIntent().getExtras();
 				String screenType= myBunble.getString("screenType");
+				String gameFileName= myBunble.getString("gameFileName");
+				final AssetManager assetManager = getAssets();
+				InputStream file;
+				try
+				{
+					file = assetManager.open("roms/"+gameFileName.toString());
+				}
+				catch (IOException e)
+				{
+						// handle
+				}				
+
+				// debug
+				Log.v("string received", gameFileName.toString());
 
 				// make it fullscreen !!! :p
 				requestWindowFeature(Window.FEATURE_NO_TITLE);

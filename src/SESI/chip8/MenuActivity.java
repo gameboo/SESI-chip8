@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.app.Activity;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
@@ -25,8 +26,10 @@ public class MenuActivity extends Activity implements OnItemSelectedListener
 				super.onCreate(savedInstanceState);
 				setContentView(R.layout.menuactivity);
 
+				final Bundle myBundle = new Bundle();
+				final AssetManager assetManager = getAssets();
+
 				// choix du jeu
-				AssetManager assetManager = getAssets();
 				ListView gameListView = (ListView) findViewById(R.id.gameListView);
 				try
 				{
@@ -41,22 +44,41 @@ public class MenuActivity extends Activity implements OnItemSelectedListener
 				{
 						// handle
 				}				
-				// spinner screen
+				gameListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+								{
+								public void onItemClick(AdapterView<?> av, View v, int pos, long id)
+								{
+								myBundle.putString("gameFileName",((TextView) v).getText().toString());
+								}
+								});
+
+				// Choix du screen
 				final Spinner screenSpinner = (Spinner) findViewById(R.id.screenSpinner);
 				ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 								this, R.array.screenType, android.R.layout.simple_spinner_item);
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				screenSpinner.setAdapter(adapter);
 
+				// valider les choix
 				Button go = (Button) findViewById(R.id.buttonGo);
 				go.setOnClickListener(new View.OnClickListener()
 								{
 								public void onClick(View view)
 								{
 								Intent myIntent = new Intent(view.getContext(), GameActivity.class);
-								Bundle myBunble = new Bundle();
-								myBunble .putString("screenType",screenSpinner.getSelectedItem().toString());
-								myIntent.putExtras(myBunble);
+								myBundle.putString("screenType",screenSpinner.getSelectedItem().toString());
+								if(myBundle.get("gameFileName") == null)
+								{
+								try
+								{
+								myBundle.putString("gameFileName",assetManager.list("roms")[0].toString());
+								}
+								catch (IOException e)
+								{
+								// handle
+								}				
+								}
+								myIntent.putExtras(myBundle);
 								startActivityForResult(myIntent, 0);
 								}
 
