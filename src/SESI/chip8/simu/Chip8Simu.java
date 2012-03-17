@@ -24,8 +24,11 @@ public class Chip8Simu
 	private Chip8Input _kb ;
 	
 	// Registres du CHIP8
-	private int _PC ;
-	private short[] _V ;
+	private short _PC ;			// Program Counter
+	private short _SP ;			// Stack Pointer
+	private short[] _V ;		// Generic Purpose Registers
+	private short[] _stack ;	// Stack Memory
+	private short _I ;			// Adress Register
 
 
 	public Chip8Simu(Chip8Screen screen, Chip8Input kb)
@@ -46,12 +49,16 @@ public class Chip8Simu
 
 		_PC = 0x200 ;
 		_V = new short[0x10] ;
+		_stack = new short[0x10] ;		// 16 niveaux de pile
 	}
 	
 	/* Un appel a cette fonction execute une instruction du programme chip8 */
 	public void step()
 	{
+		short op ;
 		Sprite tmp ;
+		
+		op = 0 ;
 
 		// Pour test uniquement
 		if (_alive == 0) {
