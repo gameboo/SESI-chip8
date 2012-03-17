@@ -4,6 +4,7 @@ import SESI.chip8.utils.Chip8Input ;
 import SESI.chip8.utils.Chip8Screen ;
 import SESI.chip8.utils.Sprite ;
 import java.util.TimerTask ;
+import java.util.Random ;
 
 public class Chip8Simu
 {
@@ -22,6 +23,7 @@ public class Chip8Simu
 	private Memory _mem ;
 	private Chip8Screen _screen ;
 	private Chip8Input _kb ;
+	private Random _rand ;
 	
 	// Registres du CHIP8
 	private int _PC ;			// Program Counter
@@ -51,6 +53,7 @@ public class Chip8Simu
 		_PC = 0x200 ;
 		_V = new short[0x10] ;
 		_stack = new int[0x10] ;		// 16 niveaux de pile
+		_rand = new Random() ;
 	}
 	
 	/* Un appel a cette fonction execute une instruction du programme chip8 */
@@ -131,15 +134,16 @@ public class Chip8Simu
 						}
 			case 9 :	if (_V[x] != _V[y]) { _PC = (_PC + 2) % 0x10000 ; } // SKIP ON DIFFERENT REGISTERS
 						break ;
-			case 10 :	_I = nnn ;		// LD dans I
+			case 0xA :	_I = nnn ;		// LD dans I
 						break ;
-			case 11 :	_PC = (short) ((nnn + _V[0])&0xFFFF) ; // BRANCH
+			case 0xB :	_PC = (short) ((nnn + _V[0])&0xFFFF) ; // BRANCH
 						break ;
-			case 12 :	_I = nnn ;
+			case 0xC :	tmp = _rand.nextInt() ;		// RANDOM
+						_V[x] = (short)((tmp & kk) & 0xFF) ;
 						break ;
-			case 13 :	_I = nnn ;
+			case 0xD :	_I = nnn ;
 						break ;
-			case 14 :	_I = nnn ;
+			case 0xF :	_I = nnn ;
 						break ;
 
 
