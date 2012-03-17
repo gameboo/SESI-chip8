@@ -118,15 +118,15 @@ public class Chip8Simu
 										if (tmp > 0xFF) {_V[0xF]=1;}
 										else {_V[0xF] = 0;}
 										break ;
-							case 5 :	if (_V[y] >_V[x]){_V[0xF]=1;} // SUB Reg (Different par rapport a la doc)
-										else {_V[0xF] = 0;}
+							case 5 :	if (_V[y] >_V[x]){_V[0xF]=0;} // SUB Reg
+										else {_V[0xF] = 1;}
 										_V[x] = (short)((_V[x] - _V[y])&0xFF);
 										break ;
 							case 6 :	_V[0xF] = (short)(_V[x] & 0x1) ;	// LD Reg
 										_V[x] = (short) ((_V[x]>>1) & 0x7F);
 										break ;
-							case 7 :	if (_V[x] >_V[y]){_V[0xF]=1;} // SUB Reg (Different par rapport a la doc)
-										else {_V[0xF] = 0;}
+							case 7 :	if (_V[x] >_V[y]){_V[0xF]=0;} // SUB Reg
+										else {_V[0xF] = 1;}
 										_V[x] = (short)((_V[y] - _V[x])&0xFF);
 										break ;
 							default:	// Probleme !!!!
