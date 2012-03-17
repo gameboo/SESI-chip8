@@ -173,16 +173,24 @@ public class Chip8Simu
 							case 0x0A: tmp = _kb.isSomeButtonPressed();		// WAIT KEY
 										if (tmp == -1) {_PC=_PC-2 ;} // On BLOQUE
 										else { _V[x] = (short)(tmp & 0xFF); }
-							case 0x15: _DT = _V[x] ;	// SET DT
-							case 0x18: _ST = _V[x] ;	// SET ST
-							case 0x1E: _I = (_I+_V[x]) & 0xFFFF; // I = I + V[x]
-							case 0x29: _I = (_V[x] * 5) & 0xFFFF ; // I=Digit de VX
+							case 0x15: _DT = _V[x] ; break ;	// SET DT
+							case 0x18: _ST = _V[x] ; break ;	// SET ST
+							case 0x1E: _I = (_I+_V[x]) & 0xFFFF; break ; // I = I + V[x]
+							case 0x29: _I = (_V[x] * 5) & 0xFFFF ; break ;// I=Digit de VX
 							case 0x33:	_mem.writeAt(_I,(short)((_V[x] / 100) & 0xFF)) ;
 										_mem.writeAt(_I+1,(short)(((_V[x]%100)/ 10) & 0xFF)) ;
 										_mem.writeAt(_I+2,(short)((_V[x]%10) & 0xFF)) ;
-									
-							case 0x55:
-							case 0x65:break ;
+										break ;									
+							case 0x55: for (tmp=0;tmp<0x10;tmp++)
+										{
+											_mem.writeAt((_I+tmp)&0xFFFF,(short)_V[tmp]) ;
+										}
+										break ;
+							case 0x65:	for (tmp=0;tmp<0x10;tmp++)
+										{
+											_V[tmp] = (short)(_mem.readFrom((_I+tmp)&0xFFFF)&0xFF) ;
+										}
+										break ;
 							default:break ; // Instruction non geree
 						};
 						break ;
