@@ -129,8 +129,19 @@ public class Chip8Simu
 							default:	// Probleme !!!!
 										break ;
 						}
-			case 11:	_V[x] = 0 ;	// LD
+			case 9 :	if (_V[x] != _V[y]) { _PC = (_PC + 2) % 0x10000 ; } // SKIP ON DIFFERENT REGISTERS
 						break ;
+			case 10 :	_I = nnn ;		// LD dans I
+						break ;
+			case 11 :	_PC = (short) ((nnn + _V[0])&0xFFFF) ; // BRANCH
+						break ;
+			case 12 :	_I = nnn ;
+						break ;
+			case 13 :	_I = nnn ;
+						break ;
+			case 14 :	_I = nnn ;
+						break ;
+
 
 			default:
 						break; // Probleme si on arrive dans ce cas
