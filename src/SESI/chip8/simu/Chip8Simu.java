@@ -71,10 +71,12 @@ public class Chip8Simu
 		Log.v("@GameActivity","SIMU : ETAPE 7") ;
 		try {tmp = file.read() ;}
 		catch (Exception e){tmp=-1;}
-		i = 0 ;
+		i = 0x200 ;
 		Log.v("@GameActivity","SIMU : ETAPE 8") ;
 		while (tmp != -1) {
-			_mem.writeAt(0x200+i,(short) tmp) ;
+			Log.v("@GameActivity","SIMU PROGRAMME ECRITURE "+Integer.toHexString(i)+" DE "+Integer.toHexString(tmp)) ;
+			_mem.writeAt(i,(short) tmp) ;
+			i++ ;
 			try {tmp = file.read() ;}
 			catch (Exception e){tmp=-1;}
 		}		
@@ -84,6 +86,7 @@ public class Chip8Simu
 	/* Un appel a cette fonction execute une instruction du programme chip8 */
 	public void step()
 	{
+		Log.v("@GameActivity","SIMU STEP Starting. PC="+_PC) ;
 		int instruction ;
 		int op,nnn,nn,x,y,z,kk ;
 		int tmp ;
@@ -99,7 +102,7 @@ public class Chip8Simu
 		}
 		show_life(0,0,stmp);
 		
-		instruction = _mem.readFrom(_PC) << 8 + _mem.readFrom(_PC+1) ;
+		instruction = (_mem.readFrom(_PC) << 8) + _mem.readFrom(_PC+1) ;
 
 		op  =(instruction & 0xF000) >> 12 ;
 		nnn = instruction & 0x0FFF;
@@ -111,10 +114,13 @@ public class Chip8Simu
 		
 		// Passage a l'instruction suivante
 		_PC = _PC + 2 ;
+		
+		Log.v("@GameActivity","SIMU STEP INSTRUCTION="+Integer.toHexString(instruction)) ;
 
 		switch (op)
 		{
-			case 0 :	if (nnn == 0x0E0) {_screen.clear() ;}	// Clear Screen	}
+			case 0 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 0 CLS") ;
+						if (nnn == 0x0E0) {_screen.clear() ;}	// Clear Screen	}
 						else if (nnn == 0x0EE)					// Return from subroutine
 						{
 							if (_SP > 0)
@@ -125,26 +131,34 @@ public class Chip8Simu
 						}
 						// else : obsolete routine, just ignore
 						break ;
-			case 1 :	_PC = nnn ;		// JUMP
+			case 1 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 1 JUMP");
+						_PC = nnn ;		// JUMP
 						break ;
-			case 2 :	if (_SP < 0x10)	// CALL
+			case 2 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 2 CALL") ;
+						if (_SP < 0x10)	// CALL
 						{
 							_SP++;
 							_stack[_SP] = _PC ;
 							_PC = nnn ;
 						}
 						break ;
-			case 3 :	if (_V[x] == kk) { _PC = ((_PC + 2) & 0xFFFF) ; } // SKIP ON EQUAL
+			case 3 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 3 SKIP ON EQUAL") ;
+						if (_V[x] == kk) { _PC = ((_PC + 2) & 0xFFFF) ; } // SKIP ON EQUAL
 						break ;
-			case 4 :	if (_V[x] != kk) { _PC = (_PC + 2) % 0x10000 ; } // SKIP ON DIFFERENT
+			case 4 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 4 SKIP ON DIFFERENT") ;
+						if (_V[x] != kk) { _PC = (_PC + 2) & 0x0FFFF; } // SKIP ON DIFFERENT
 						break ;
-			case 5 :	if (_V[x] == _V[y]) { _PC = (_PC + 2) % 0x10000 ; } // SKIP ON EQUAL REGISTERS
+			case 5 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 5 SKIP ON EQUAL REGISTERS") ;
+						if (_V[x] == _V[y]) { _PC = (_PC + 2) & 0xFFFF ; } // SKIP ON EQUAL REGISTERS
 						break ;
-			case 6 :	_V[x] = (short) kk ;	// LD Imm
+			case 6 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 6 LD IMM");
+						_V[x] = (short) kk ;	// LD Imm
 						break ;
-			case 7 :	_V[x] = (short)((_V[x] + kk) & 0xFF) ; // ADD
+			case 7 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 7 ADD IMM");
+						_V[x] = (short)((_V[x] + kk) & 0xFF) ; // ADD
 						break ;
-			case 8 :	switch (z)
+			case 8 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 8 OPERATORS") ;
+						switch (z)
 						{
 							case 0 :	_V[x] = _V[y] ;	// LD Reg
 										break ;
@@ -173,16 +187,21 @@ public class Chip8Simu
 							default:	// Probleme !!!!
 										break ;
 						}
-			case 9 :	if (_V[x] != _V[y]) { _PC = (_PC + 2) % 0x10000 ; } // SKIP ON DIFFERENT REGISTERS
+			case 9 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 9 SKIP ON DIFFERENT REGISTERS") ;
+						if (_V[x] != _V[y]) { _PC = (_PC + 2) & 0xFFFF ; } // SKIP ON DIFFERENT REGISTERS
 						break ;
-			case 0xA :	_I = nnn ;		// LD dans I
+			case 0xA :	Log.v("@GameActivity","SIMU STEP INSTRUCTION A LD DANS I") ;
+						_I = nnn ;		// LD dans I
 						break ;
-			case 0xB :	_PC = (short) ((nnn + _V[0])&0xFFFF) ; // BRANCH
+			case 0xB :	Log.v("@GameActivity","SIMU STEP INSTRUCTION B BRANCH") ;
+						_PC = (short) ((nnn + _V[0])&0xFFFF) ; // BRANCH
 						break ;
-			case 0xC :	tmp = _rand.nextInt() ;		// RANDOM
+			case 0xC :	Log.v("@GameActivity","SIMU STEP INSTRUCTION C RANDOM") ;
+						tmp = _rand.nextInt() ;		// RANDOM
 						_V[x] = (short)((tmp & kk) & 0xFF) ;
 						break ;
-			case 0xD :	spritebuff = new byte[z] ;	// DRAW SPRITE
+			case 0xD :	Log.v("@GameActivity","SIMU STEP INSTRUCTION D DRAW SPRITE") ;
+						spritebuff = new byte[z] ;	// DRAW SPRITE
 						for (tmp=0;tmp<z;tmp++)
 						{
 							spritebuff[tmp] = (byte) (_mem.readFrom(_I+tmp) & 0xFF) ;
@@ -191,7 +210,8 @@ public class Chip8Simu
 						if( _screen.drawSprite(_V[x],_V[y],_sprite)) {_V[0xF]=1;}
 						else  {_V[0xF]=0;}
 						break ;
-			case 0xE :	if (z == 0xE)			// SKIP if KEY PRESSED OR NOT
+			case 0xE :	Log.v("@GameActivity","SIMU STEP INSTRUCTION E SKIP IF KEY PRESSED OR NOT") ;
+if (z == 0xE)			// SKIP if KEY PRESSED OR NOT
 						{
 							if (_kb.isButtonPressed(_V[x])) { _PC = (_PC + 2) & 0xFFFF ;}
 						} else if (z == 0xE)
@@ -199,7 +219,8 @@ public class Chip8Simu
 							if (false == _kb.isButtonPressed(_V[x])) { _PC = (_PC + 2) & 0xFFFF ;}
 						}
 						break ;
-			case 0xF :	switch(nn)				// Plusieurs operateurs
+			case 0xF :	Log.v("@GameActivity","SIMU STEP INSTRUCTION F VARIOUS OPERATORS") ;
+switch(nn)				// Plusieurs operateurs
 						{
 							case 0x07: _V[x] = (short) (_DT&0xFF) ; break ; // GET DELAY TIMER VALUE
 							case 0x0A: tmp = _kb.isSomeButtonPressed();		// WAIT KEY
