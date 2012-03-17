@@ -24,11 +24,11 @@ public class Chip8Simu
 	private Chip8Input _kb ;
 	
 	// Registres du CHIP8
-	private short _PC ;			// Program Counter
+	private int _PC ;			// Program Counter
 	private short _SP ;			// Stack Pointer
 	private short[] _V ;		// Generic Purpose Registers
-	private short[] _stack ;	// Stack Memory
-	private short _I ;			// Adress Register
+	private int[] _stack ;	// Stack Memory
+	private int _I ;			// Adress Register
 
 
 	public Chip8Simu(Chip8Screen screen, Chip8Input kb)
@@ -50,7 +50,7 @@ public class Chip8Simu
 
 		_PC = 0x200 ;
 		_V = new short[0x10] ;
-		_stack = new short[0x10] ;		// 16 niveaux de pile
+		_stack = new int[0x10] ;		// 16 niveaux de pile
 	}
 	
 	/* Un appel a cette fonction execute une instruction du programme chip8 */
@@ -59,13 +59,18 @@ public class Chip8Simu
 		int instruction ;
 		int op ;
 		int nnn ;
+		int x,y ;
+		short kk ;
 
 		Sprite tmp ;
 		
 		instruction = 0 ;
 
-		op = (instruction & 0xF000) >> 12 ;
+		op  =(instruction & 0xF000) >> 12 ;
 		nnn = instruction & 0x0FFF;
+		x   = instruction & 0x0F00;
+		y   = instruction & 0x00F0;
+		kk  = (short) (instruction & 0x00FF);
 		switch (op)
 		{
 			case 0 :	if (nnn == 0x0E0) {_screen.clear() ;}	// Clear Screen	}
@@ -79,6 +84,34 @@ public class Chip8Simu
 						}
 						// else : obsolete routine, just ignore
 						break ;
+			case 1 :	_PC = nnn ;		// JUMP
+						break ;
+			case 2 :	if (_SP < 0x10)	// CALL
+						{
+							_SP++;
+							_stack[_SP] = _PC ;
+							_PC = nnn ;
+						}
+						break ;
+			case 3 :	if (_V[x] == kk) { _PC = (_PC + 2) % 0x10000 ; } // SKIP ON EQUAL
+						break ;
+			case 4 :	if (_V[x] != kk) { _PC = (_PC + 2) % 0x10000 ; } // SKIP ON DIFFERENT
+						break ;
+			case 5 :	if (_V[x] == _V[y]) { _PC = (_PC + 2) % 0x10000 ; } // SKIP ON EQUAL REGISTERS
+						break ;
+			case 6 :	_V[x] = kk ;	// LD Imm
+						break ;
+			case 7 :	_V[x] = (short)((_V[x] + kk) & 0xFF) ; // ADD
+						break ;
+			case 8 :	_V[x] = _V[y] ;	// LD Reg
+						break ;
+			case 9 :	_V[x] = (short) (_V[x] | _V[y]);	// OR
+						break ;
+			case 10:	_V[x] = (short) (_V[x] & _V[y]) ;	// OR
+						break ;
+			case 11:	_V[x] = kk ;	// LD
+						break ;
+
 			default:
 						break; // Probleme si on arrive dans ce cas
 					
