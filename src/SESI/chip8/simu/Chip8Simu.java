@@ -11,16 +11,22 @@ public class Chip8Simu
 	private int _alive ;
 	private int _alive2 ;
 	private FontSet _fonts ;
+	private Sprite ERR1 = new Sprite(5) ;
+	private Sprite ERR2 = new Sprite(5) ;
 	
 	// Delay and Sound Timers
 	private int _DT ;
 	private int _ST ;
 
+	// Composants geres par une classe externe
 	private Memory _mem ;
-
-	private Sprite ERR1 = new Sprite(5) ;
-	private Sprite ERR2 = new Sprite(5) ;
 	private Chip8Screen _screen ;
+	private Chip8Input _kb ;
+	
+	// Registres du CHIP8
+	private int _PC ;
+	private short[] _V ;
+
 
 	public Chip8Simu(Chip8Screen screen, Chip8Input kb)
 	{
@@ -28,21 +34,21 @@ public class Chip8Simu
 		_alive=0;
 		_alive2=0;
 		_fonts = new FontSet() ;
+		ERR1.setMatrix(_fonts.chip8_fontset[0x12]);
+		ERR2.setMatrix(_fonts.chip8_fontset[0x13]);
 		
 		// Initialisation des variables CHIP8
 		_DT = 0 ;
 		_ST = 0 ;
 		_mem = new Memory() ;
-
-		ERR1.setMatrix(_fonts.chip8_fontset[0x12]);
-		ERR2.setMatrix(_fonts.chip8_fontset[0x13]);
-
 		_screen = screen ;
+		_kb = kb ;
+
+		_PC = 0x200 ;
+		_V = new short[0x10] ;
 	}
 	
-	/* Un appel a cette fonction execute une instruction du programme chip8
-
-	*/
+	/* Un appel a cette fonction execute une instruction du programme chip8 */
 	public void step()
 	{
 		Sprite tmp ;
@@ -59,9 +65,7 @@ public class Chip8Simu
 		show_life(0,0,tmp);
 	}
 
-	/* Le chip8 contient 2 timers internes mis a jours a une frequence de 60Hz, cette fonction met a jour les timers
-	
-	*/
+	/* Le chip8 contient 2 timers internes mis a jours a une frequence de 60Hz, cette fonction met a jour les timers */
 	public void updtTimers()
 	{
 		Sprite tmp ;
