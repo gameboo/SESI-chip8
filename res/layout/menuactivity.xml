@@ -4,14 +4,13 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editText1"
+	<ListView
+        android:id="@+id/gameListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/pacourir" >
-
-        <requestFocus />
-    </EditText>
+	>
+    <requestFocus />
+    </ListView>
 
     <Spinner
         android:id="@+id/screenSpinner"

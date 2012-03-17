@@ -9,6 +9,7 @@ CLASS_DIR=$(BUILD_DIR)/classes
 DEX_DIR=$(BUILD_DIR)/dex
 DEX_FILE=app.dex
 RES_DIR=res
+ASSETS_DIR=assets
 RES_OUTPUT_FILE=$(BUILD_DIR)/res
 ANDROID_MANIFEST=AndroidManifest.xml
 PACKAGE=SESI.chip8
@@ -40,7 +41,7 @@ AAPTERIES:$(ANDROID_MANIFEST)
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(CLASS_DIR)
 	mkdir -p $(DEX_DIR)
-	aapt p -f -M $(ANDROID_MANIFEST) -S $(RES_DIR) -J $(BUILD_DIR) -I $(ANDROID_JAR) -F $(RES_OUTPUT_FILE)
+	aapt p -f -M $(ANDROID_MANIFEST) -S $(RES_DIR) -A $(ASSETS_DIR) -J $(BUILD_DIR) -I $(ANDROID_JAR) -F $(RES_OUTPUT_FILE)
 
 startadb:
 	sudo $(ADB) start-server
