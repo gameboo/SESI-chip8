@@ -7,6 +7,16 @@ import java.util.TimerTask ;
 
 public class Chip8Simu
 {
+	// Pour Test, a supprimer ensuite
+	private int _alive ;
+	private int _alive2 ;
+	
+	// Delay and Sound Timers
+	private int _DT ;
+	private int _ST ;
+
+
+
 	byte chip8_fontset[][] =
 	{ 
 		{(byte)0xF0, (byte)0x90, (byte)0x90, (byte)0x90, (byte)0xF0}, // 0
@@ -24,26 +34,31 @@ public class Chip8Simu
 		{(byte)0xF0, (byte)0x80, (byte)0x80, (byte)0x80, (byte)0xF0}, // C
 		{(byte)0xE0, (byte)0x90, (byte)0x90, (byte)0x90, (byte)0xE0}, // D
 		{(byte)0xF0, (byte)0x80, (byte)0xF0, (byte)0x80, (byte)0xF0}, // E
-		{(byte)0xF0, (byte)0x80, (byte)0xF0, (byte)0x80, (byte)0x80},  // F
+		{(byte)0xF0, (byte)0x80, (byte)0xF0, (byte)0x80, (byte)0x80}, // F
 		{(byte)0x80},  // pixel gauche
-		{(byte)0xFF}  // ligne pleine
+		{(byte)0xFF},  // ligne pleine
+		{(byte)0xC3, (byte)0x24, (byte)0x5A, (byte)0xFF,
+		 (byte)0xFF, (byte)0x7E, (byte)0x81, (byte)0x66},		// Surprise 8x8
+		{(byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
+		 (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00}		// Blank 8x8
 	};
-	private Sprite OK = new Sprite(5) ;
 	private Sprite ERR1 = new Sprite(5) ;
 	private Sprite ERR2 = new Sprite(5) ;
-	private Sprite ERR3 = new Sprite(5) ;
-	private int _chip8time = 0 ;
 	private Chip8Screen _screen ;
 
 	public Chip8Simu(Chip8Screen screen, Chip8Input kb)
 	{
+		// Tests
+		_alive=0;
+		_alive2=0;
+		
+		// Initialisation des variables CHIP8
+		_DT = 0 ;
+		_ST = 0 ;
 
-		OK.setMatrix(chip8_fontset[1]);
-		ERR1.setMatrix(chip8_fontset[10]);
-		ERR2.setMatrix(chip8_fontset[11]);
-		ERR3.setMatrix(chip8_fontset[12]);
+		ERR1.setMatrix(chip8_fontset[0x12]);
+		ERR2.setMatrix(chip8_fontset[0x13]);
 
-		_chip8time = 0 ;
 		_screen = screen ;
 	}
 	
@@ -52,13 +67,18 @@ public class Chip8Simu
 	*/
 	public void step()
 	{
-		if (_chip8time == 0) {
-			_screen.drawSprite(0,0, ERR1);
-			_chip8time = 1 ;
+		Sprite tmp ;
+
+		// Pour test uniquement
+		if (_alive == 0) {
+			_alive = 1 ;
+			tmp = ERR1 ;
 		} else {
-			_screen.drawSprite(0,0, ERR2);
-			_chip8time = 0 ;
+			_alive = 0 ;
+			tmp = ERR2 ;
 		}
+		
+		show_life(0,0,tmp);
 	}
 
 	/* Le chip8 contient 2 timers internes mis a jours a une frequence de 60Hz, cette fonction met a jour les timers
@@ -66,13 +86,25 @@ public class Chip8Simu
 	*/
 	public void updtTimers()
 	{
-		if (_chip8time == 0) {
-			_screen.drawSprite(8,8, ERR1);
-			_chip8time = 1 ;
+		Sprite tmp ;
+		if (_DT > 0) {_DT--;}
+		if (_ST > 0) {_DT--;}
+
+		// Pour test uniquement
+		if (_alive2 == 0) {
+			_alive2 = 1 ;
+			tmp = ERR1 ;
 		} else {
-			_screen.drawSprite(8,8, ERR2);
-			_chip8time = 0 ;
+			_alive2 = 0 ;
+			tmp = ERR2 ;
 		}
+		
+		show_life(8,8,tmp);
+	}
+
+	public void show_life(int x, int y,Sprite s)
+	{
+			_screen.drawSprite(x,y,s);
 	}
 
 
