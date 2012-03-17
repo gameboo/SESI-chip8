@@ -200,7 +200,7 @@ public class GLScreenTest extends GLSurfaceView implements GLSurfaceView.Rendere
         }
     }
 
-    public void drawSprite(int x, int y, Sprite sprite)
+    public boolean drawSprite(int x, int y, Sprite sprite)
     {
         if(x >= 0 && x < _width && y >= 0 && y < _height)
         {
@@ -228,5 +228,6 @@ public class GLScreenTest extends GLSurfaceView implements GLSurfaceView.Rendere
             Log.v("DEBUG_SESIchip8_GLScreen >>> ","_nbPixelWidth = "+_width);
             Log.v("DEBUG_SESIchip8_GLScreen >>> ","_nbPixelHeight = "+_height);
         }
+		return true ;
     }
 }

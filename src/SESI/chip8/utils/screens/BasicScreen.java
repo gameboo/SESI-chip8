@@ -107,7 +107,7 @@ public class BasicScreen extends View implements Chip8Screen
         invalidate();
     }
 
-    public void drawSprite(int x, int y, Sprite sprite)
+    public boolean drawSprite(int x, int y, Sprite sprite)
     {
         if(x >= 0 && x < _nbPixelWidth && y >= 0 && y < _nbPixelHeight)
         {
@@ -138,5 +138,6 @@ public class BasicScreen extends View implements Chip8Screen
             Log.v("DEBUG_SESIchip8_BasicScreen >>> ","_nbPixelHeight = "+_nbPixelHeight);
         }
         invalidate();
+		return true ;
     }
 }

@@ -31,7 +31,9 @@ public class Chip8Simu
 	private short[] _V ;		// Generic Purpose Registers
 	private int[] _stack ;	// Stack Memory
 	private int _I ;			// Adress Register
-
+	
+	// Variables utiles
+	private Sprite _sprite ;
 
 	public Chip8Simu(Chip8Screen screen, Chip8Input kb)
 	{
@@ -62,6 +64,8 @@ public class Chip8Simu
 		int instruction ;
 		int op,nnn,x,y,z,kk ;
 		int tmp ;
+		byte[] spritebuff ;
+		
 		
 		instruction = 0 ;
 
@@ -141,7 +145,14 @@ public class Chip8Simu
 			case 0xC :	tmp = _rand.nextInt() ;		// RANDOM
 						_V[x] = (short)((tmp & kk) & 0xFF) ;
 						break ;
-			case 0xD :	_I = nnn ;
+			case 0xD :	spritebuff = new byte[z] ;
+						for (tmp=0;tmp<z;tmp++)
+						{
+							spritebuff[tmp] = (byte) (_mem.readFrom(_I+tmp) & 0xFF) ;
+						}
+						_sprite = new Sprite(spritebuff) ;
+						if( _screen.drawSprite(_V[x],_V[y],_sprite)) {_V[0xF]=1;}
+						else  {_V[0xF]=0;}
 						break ;
 			case 0xF :	_I = nnn ;
 						break ;
