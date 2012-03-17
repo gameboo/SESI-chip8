@@ -15,6 +15,8 @@ public class Chip8Simu
 	private int _DT ;
 	private int _ST ;
 
+	private Memory _mem ;
+
 
 
 	byte chip8_fontset[][] =
@@ -55,6 +57,7 @@ public class Chip8Simu
 		// Initialisation des variables CHIP8
 		_DT = 0 ;
 		_ST = 0 ;
+		_mem = new Memory() ;
 
 		ERR1.setMatrix(chip8_fontset[0x12]);
 		ERR2.setMatrix(chip8_fontset[0x13]);
