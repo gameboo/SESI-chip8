@@ -4,16 +4,27 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editText1"
+	<TextView
+		android:id="@+id/selectGame"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:text="@string/selectGame"/>
+
+	<ListView
+        android:id="@+id/gameListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/pacourir" >
+	>
+    <requestFocus />
+    </ListView>
 
-        <requestFocus />
-    </EditText>
-
-    <Spinner
+	<TextView
+		android:id="@+id/selectGameScreen"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:text="@string/selectGameScreen"/>
+    
+	<Spinner
         android:id="@+id/screenSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

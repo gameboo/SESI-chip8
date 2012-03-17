@@ -22,6 +22,10 @@ public class GameActivity extends Activity
 		public void onCreate(Bundle savedInstanceState)
 		{
 				super.onCreate(savedInstanceState);
+				// récupération des info de MenuActivity
+				Bundle myBunble  = this.getIntent().getExtras();
+				String screenType= myBunble.getString("screenType");
+
 				// make it fullscreen !!! :p
 				requestWindowFeature(Window.FEATURE_NO_TITLE);
 				getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
@@ -32,9 +36,13 @@ public class GameActivity extends Activity
 				lay.setLayoutParams(params);
 
 				View screen;
-				//if
-				screen = new BasicScreen(this);
-				//screen = new GLScreen(this);
+				if(screenType.compareToIgnoreCase("BasicScreen") == 0)
+					screen = new BasicScreen(this);
+				else if(screenType.compareToIgnoreCase("GLScreen") == 0)
+					screen = new GLScreen(this);
+				else
+					screen = new BasicScreen(this);
+				
 				params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
 				screen.setLayoutParams(params);
 
@@ -51,48 +59,48 @@ public class GameActivity extends Activity
 				lay.addView(inputView);
 				setContentView(lay);
 
-				
+
 				// test //
 				final Chip8Simu simu = new Chip8Simu((Chip8Screen)screen,input) ;
-				
+
 				// Mise en place d'un Handler pour recuperer les messages
 
 				final Handler handtime= new Handler()
-					{
+				{
 						public void handleMessage(Message msg)
-							{
+						{
 								simu.updtTimers();
-							}
-					};
-				
+						}
+				};
+
 				final Handler handcpu= new Handler()
-					{
+				{
 						public void handleMessage(Message msg)
-							{
+						{
 								simu.step();
-							}
-					};
+						}
+				};
 
 				// On cree un service de timer qui envoie des messages pour signaler l'activite
 				TimerTask tasktime = new TimerTask()
 				{
-					public void run()
-					{
-						handtime.sendEmptyMessage(0);
-					}
+						public void run()
+						{
+								handtime.sendEmptyMessage(0);
+						}
 				};
-				
+
 				TimerTask taskcpu = new TimerTask()
 				{
-					public void run()
-					{
-						handcpu.sendEmptyMessage(0);
-					}
+						public void run()
+						{
+								handcpu.sendEmptyMessage(0);
+						}
 				};
-				
+
 				Timer timer60hz = new Timer() ;
 				timer60hz.scheduleAtFixedRate(tasktime,0,1000) ;
-								
+
 				Timer timercpu = new Timer() ;
 				timercpu.scheduleAtFixedRate(taskcpu,0,200) ;
 		}
