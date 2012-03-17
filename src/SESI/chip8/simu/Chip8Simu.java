@@ -57,12 +57,8 @@ public class Chip8Simu
 	public void step()
 	{
 		int instruction ;
-		int op ;
-		int nnn ;
-		int x,y ;
-		short kk ;
-
-		Sprite tmp ;
+		int op,nnn,x,y,z,kk ;
+		int tmp ;
 		
 		instruction = 0 ;
 
@@ -70,7 +66,8 @@ public class Chip8Simu
 		nnn = instruction & 0x0FFF;
 		x   = instruction & 0x0F00;
 		y   = instruction & 0x00F0;
-		kk  = (short) (instruction & 0x00FF);
+		z   = instruction & 0x000F;
+		kk  = instruction & 0x00FF;
 		switch (op)
 		{
 			case 0 :	if (nnn == 0x0E0) {_screen.clear() ;}	// Clear Screen	}
@@ -79,7 +76,7 @@ public class Chip8Simu
 							if (_SP > 0)
 							{
 								_PC = _stack[_SP] ;
-								_SP--;
+								_SP-- ;
 							}
 						}
 						// else : obsolete routine, just ignore
@@ -93,23 +90,46 @@ public class Chip8Simu
 							_PC = nnn ;
 						}
 						break ;
-			case 3 :	if (_V[x] == kk) { _PC = (_PC + 2) % 0x10000 ; } // SKIP ON EQUAL
+			case 3 :	if (_V[x] == kk) { _PC = ((_PC + 2) & 0xFFFF) ; } // SKIP ON EQUAL
 						break ;
 			case 4 :	if (_V[x] != kk) { _PC = (_PC + 2) % 0x10000 ; } // SKIP ON DIFFERENT
 						break ;
 			case 5 :	if (_V[x] == _V[y]) { _PC = (_PC + 2) % 0x10000 ; } // SKIP ON EQUAL REGISTERS
 						break ;
-			case 6 :	_V[x] = kk ;	// LD Imm
+			case 6 :	_V[x] = (short) kk ;	// LD Imm
 						break ;
 			case 7 :	_V[x] = (short)((_V[x] + kk) & 0xFF) ; // ADD
 						break ;
-			case 8 :	_V[x] = _V[y] ;	// LD Reg
-						break ;
-			case 9 :	_V[x] = (short) (_V[x] | _V[y]);	// OR
-						break ;
-			case 10:	_V[x] = (short) (_V[x] & _V[y]) ;	// OR
-						break ;
-			case 11:	_V[x] = kk ;	// LD
+			case 8 :	switch (z)
+						{
+							case 0 :	_V[x] = _V[y] ;	// LD Reg
+										break ;
+							case 1 :	_V[x] = (short) ((_V[x] | _V[y]) & 0XFF) ;	// OR Reg
+										break ;
+							case 2 :	_V[x] = (short) ((_V[x] & _V[y]) & 0XFF) ;	// AND Reg
+										break ;
+							case 3 :	_V[x] = (short) ((_V[x] ^ _V[y]) & 0XFF) ;	// XOR Reg
+										break ;
+							case 4 :	tmp = _V[x] + _V[y] ;	//AND Reg with CARRY
+										_V[x] = (short)(tmp & 0xFF);
+										if (tmp > 0xFF) {_V[0xF]=1;}
+										else {_V[0xF] = 0;}
+										break ;
+							case 5 :	if (_V[y] >_V[x]){_V[0xF]=1;} // SUB Reg (Different par rapport a la doc)
+										else {_V[0xF] = 0;}
+										_V[x] = (short)((_V[x] - _V[y])&0xFF);
+										break ;
+							case 6 :	_V[0xF] = (short)(_V[x] & 0x1) ;	// LD Reg
+										_V[x] = (short) ((_V[x]>>1) & 0x7F);
+										break ;
+							case 7 :	if (_V[x] >_V[y]){_V[0xF]=1;} // SUB Reg (Different par rapport a la doc)
+										else {_V[0xF] = 0;}
+										_V[x] = (short)((_V[y] - _V[x])&0xFF);
+										break ;
+							default:	// Probleme !!!!
+										break ;
+						}
+			case 11:	_V[x] = 0 ;	// LD
 						break ;
 
 			default:
@@ -120,16 +140,6 @@ public class Chip8Simu
 		
 
 
-		// Pour test uniquement
-		if (_alive == 0) {
-			_alive = 1 ;
-			tmp = ERR1 ;
-		} else {
-			_alive = 0 ;
-			tmp = ERR2 ;
-		}
-		
-		show_life(0,0,tmp);
 	}
 
 	/* Le chip8 contient 2 timers internes mis a jours a une frequence de 60Hz, cette fonction met a jour les timers */
