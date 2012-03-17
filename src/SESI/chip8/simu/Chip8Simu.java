@@ -38,8 +38,7 @@ public class Chip8Simu
 
 	public Chip8Simu(Chip8Screen screen, Chip8Input kb,InputStream file)
 	{
-		int tmp ;
-		int buff ;
+		int tmp,i ;
 		// Tests
 		_alive=0;
 		_alive2=0;
@@ -60,12 +59,13 @@ public class Chip8Simu
 		_stack = new int[0x10] ;		// 16 niveaux de pile
 		_rand = new Random() ;
 
-		do
-		{
-			tmp = 1;
-		} while (true) ;
-
-		
+		// On copie le programme dans la memoire a partir de l'adresse 0x200
+		try {tmp = file.read() ;}
+		catch (Exception e){tmp=-1;}
+		i = 0 ;
+		while (tmp != -1) {
+			_mem.writeAt(0x200+i,(short) tmp) ;
+		}		
 	}
 	
 	/* Un appel a cette fonction execute une instruction du programme chip8 */
@@ -76,8 +76,7 @@ public class Chip8Simu
 		int tmp ;
 		byte[] spritebuff ;
 		
-		
-		instruction = 0 ;
+		instruction = _mem.readFrom(_PC) << 8 + _mem.readFrom(_PC+1) ;
 
 		op  =(instruction & 0xF000) >> 12 ;
 		nnn = instruction & 0x0FFF;
