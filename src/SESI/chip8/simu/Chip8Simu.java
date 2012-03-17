@@ -44,6 +44,7 @@ public class Chip8Simu
 		_DT = 0 ;
 		_ST = 0 ;
 		_mem = new Memory() ;
+		_mem.init() ;
 		_screen = screen ;
 		_kb = kb ;
 
