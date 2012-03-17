@@ -5,6 +5,7 @@ import SESI.chip8.utils.Chip8Screen ;
 import SESI.chip8.utils.Sprite ;
 import java.util.TimerTask ;
 import java.util.Random ;
+import java.io.InputStream ;
 
 public class Chip8Simu
 {
@@ -35,8 +36,10 @@ public class Chip8Simu
 	// Variables utiles
 	private Sprite _sprite ;
 
-	public Chip8Simu(Chip8Screen screen, Chip8Input kb)
+	public Chip8Simu(Chip8Screen screen, Chip8Input kb,InputStream file)
 	{
+		int tmp ;
+		int buff ;
 		// Tests
 		_alive=0;
 		_alive2=0;
@@ -56,6 +59,13 @@ public class Chip8Simu
 		_V = new short[0x10] ;
 		_stack = new int[0x10] ;		// 16 niveaux de pile
 		_rand = new Random() ;
+
+		do
+		{
+			tmp = 1;
+		} while (true) ;
+
+		
 	}
 	
 	/* Un appel a cette fonction execute une instruction du programme chip8 */

@@ -33,6 +33,7 @@ public class GameActivity extends Activity
 				String gameFileName= myBunble.getString("gameFileName");
 				final AssetManager assetManager = getAssets();
 				InputStream file;
+				file = null ; // Contourne une erreur de compilation si la selection de fichier leve une exception
 				try
 				{
 					file = assetManager.open("roms/"+gameFileName.toString());
@@ -80,7 +81,7 @@ public class GameActivity extends Activity
 
 
 				// test //
-				final Chip8Simu simu = new Chip8Simu((Chip8Screen)screen,input) ;
+				final Chip8Simu simu = new Chip8Simu((Chip8Screen)screen,input,file) ;
 
 				// Mise en place d'un Handler pour recuperer les messages
 
