@@ -30,7 +30,7 @@ public class Chip8Input
 		}
 	}
 	
-	public boolean getButtonState(int b)
+	public boolean isButtonPressed(int b)
 	{
 		if(b>=0 && b<=16)
 		{

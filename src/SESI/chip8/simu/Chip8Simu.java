@@ -145,7 +145,7 @@ public class Chip8Simu
 			case 0xC :	tmp = _rand.nextInt() ;		// RANDOM
 						_V[x] = (short)((tmp & kk) & 0xFF) ;
 						break ;
-			case 0xD :	spritebuff = new byte[z] ;
+			case 0xD :	spritebuff = new byte[z] ;	// DRAW SPRITE
 						for (tmp=0;tmp<z;tmp++)
 						{
 							spritebuff[tmp] = (byte) (_mem.readFrom(_I+tmp) & 0xFF) ;
@@ -153,6 +153,14 @@ public class Chip8Simu
 						_sprite = new Sprite(spritebuff) ;
 						if( _screen.drawSprite(_V[x],_V[y],_sprite)) {_V[0xF]=1;}
 						else  {_V[0xF]=0;}
+						break ;
+			case 0xE :	if (z == 0xE)			// SKIP if KEY PRESSED OR NOT
+						{
+							if (_kb.isButtonPressed(_V[x])) { _PC = (_PC + 2) & 0xFFFF ;}
+						} else if (z == 0xE)
+						{
+							if (false == _kb.isButtonPressed(_V[x])) { _PC = (_PC + 2) & 0xFFFF ;}
+						}
 						break ;
 			case 0xF :	_I = nnn ;
 						break ;
