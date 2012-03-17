@@ -40,6 +40,7 @@ public class GameActivity extends Activity
 				}
 				catch (IOException e)
 				{
+					Log.v("@GameActivity","IOException sur l'ouverture de file");
 						// handle
 				}				
 
@@ -81,7 +82,9 @@ public class GameActivity extends Activity
 
 
 				// test //
+				Log.v("@GameActivity","tentative de demarrer le simulation");
 				final Chip8Simu simu = new Chip8Simu((Chip8Screen)screen,input,file) ;
+				Log.v("@GameActivity","simulateur demarre avec succes");
 
 				// Mise en place d'un Handler pour recuperer les messages
 

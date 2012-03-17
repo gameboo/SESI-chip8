@@ -6,6 +6,7 @@ import SESI.chip8.utils.Sprite ;
 import java.util.TimerTask ;
 import java.util.Random ;
 import java.io.InputStream ;
+import android.util.Log ;
 
 public class Chip8Simu
 {
@@ -15,7 +16,7 @@ public class Chip8Simu
 	private FontSet _fonts ;
 	private Sprite ERR1 = new Sprite(5) ;
 	private Sprite ERR2 = new Sprite(5) ;
-	
+
 	// Delay and Sound Timers
 	private int _DT ;
 	private int _ST ;
@@ -38,6 +39,7 @@ public class Chip8Simu
 
 	public Chip8Simu(Chip8Screen screen, Chip8Input kb,InputStream file)
 	{
+		Log.v("@GameActivity","SIMU : ETAPE 1") ;
 		int tmp,i ;
 		// Tests
 		_alive=0;
@@ -45,27 +47,38 @@ public class Chip8Simu
 		_fonts = new FontSet() ;
 		ERR1.setMatrix(_fonts.chip8_fontset[0x12]);
 		ERR2.setMatrix(_fonts.chip8_fontset[0x13]);
+		Log.v("@GameActivity","SIMU : ETAPE 2") ;
 		
 		// Initialisation des variables CHIP8
 		_DT = 0 ;
 		_ST = 0 ;
 		_mem = new Memory() ;
+		Log.v("@GameActivity","SIMU : ETAPE 3") ;
 		_mem.init() ;
 		_screen = screen ;
 		_kb = kb ;
+		Log.v("@GameActivity","SIMU : ETAPE 4") ;
 
 		_PC = 0x200 ;
 		_V = new short[0x10] ;
 		_stack = new int[0x10] ;		// 16 niveaux de pile
 		_rand = new Random() ;
+		Log.v("@GameActivity","SIMU : ETAPE 5") ;
 
 		// On copie le programme dans la memoire a partir de l'adresse 0x200
+		Log.v("@GameActivity","SIMU : ETAPE 6") ;
+		show_life(8,0,ERR1);
+		Log.v("@GameActivity","SIMU : ETAPE 7") ;
 		try {tmp = file.read() ;}
 		catch (Exception e){tmp=-1;}
 		i = 0 ;
+		Log.v("@GameActivity","SIMU : ETAPE 8") ;
 		while (tmp != -1) {
 			_mem.writeAt(0x200+i,(short) tmp) ;
+			try {tmp = file.read() ;}
+			catch (Exception e){tmp=-1;}
 		}		
+		Log.v("@GameActivity","SIMU : ETAPE 9") ;
 	}
 	
 	/* Un appel a cette fonction execute une instruction du programme chip8 */
@@ -75,6 +88,16 @@ public class Chip8Simu
 		int op,nnn,nn,x,y,z,kk ;
 		int tmp ;
 		byte[] spritebuff ;
+		
+		Sprite stmp ;
+		if (_alive == 0) {
+			_alive = 1 ;
+			stmp = ERR1 ;
+		} else {
+			_alive = 0 ;
+			stmp = ERR2 ;
+		}
+		show_life(0,0,stmp);
 		
 		instruction = _mem.readFrom(_PC) << 8 + _mem.readFrom(_PC+1) ;
 
