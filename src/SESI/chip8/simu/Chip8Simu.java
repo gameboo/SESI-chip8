@@ -107,8 +107,8 @@ public class Chip8Simu
 		op  =(instruction & 0xF000) >> 12 ;
 		nnn = instruction & 0x0FFF;
 		nn  = instruction & 0x00FF;
-		x   = instruction & 0x0F00;
-		y   = instruction & 0x00F0;
+		x   = instruction & 0x0F00 >> 8;
+		y   = instruction & 0x00F0 >> 4;
 		z   = instruction & 0x000F;
 		kk  = instruction & 0x00FF;
 		
