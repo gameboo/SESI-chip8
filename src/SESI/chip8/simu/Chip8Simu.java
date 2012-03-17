@@ -47,38 +47,32 @@ public class Chip8Simu
 		_screen = screen ;
 	}
 	
-/*		while (i<64)
-		{
-			i++ ;
-			try
-			{
-				//	Thread.currentThread().sleep(1000) ;
-				wait(300) ;
-			}
-			catch (IllegalArgumentException e){ screen.drawSprite(0,5, ERR1);}
-			catch (IllegalMonitorStateException e){ screen.drawSprite(0,10, ERR2);}
-			catch (InterruptedException e){ screen.drawSprite(0,15, ERR3);}
-			screen.drawSprite(0,0, OK);
-		
-		}
+	/* Un appel a cette fonction execute une instruction du programme chip8
 
-*/
-
-	public void step1()
+	*/
+	public void step()
 	{
 		if (_chip8time == 0) {
-			_screen.drawSprite(3,3, ERR1);
+			_screen.drawSprite(0,0, ERR1);
 			_chip8time = 1 ;
 		} else {
-			_screen.drawSprite(4,4, ERR2);
+			_screen.drawSprite(0,0, ERR2);
 			_chip8time = 0 ;
 		}
 	}
-		
-	public void step2()
+
+	/* Le chip8 contient 2 timers internes mis a jours a une frequence de 60Hz, cette fonction met a jour les timers
+	
+	*/
+	public void updtTimers()
 	{
-		_screen.drawSprite(0,5, ERR2);
-		_chip8time++;
+		if (_chip8time == 0) {
+			_screen.drawSprite(8,8, ERR1);
+			_chip8time = 1 ;
+		} else {
+			_screen.drawSprite(8,8, ERR2);
+			_chip8time = 0 ;
+		}
 	}
 
 

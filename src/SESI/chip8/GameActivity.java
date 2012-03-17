@@ -57,28 +57,43 @@ public class GameActivity extends Activity
 				
 				// Mise en place d'un Handler pour recuperer les messages
 
-				final Handler handler = new Handler()
+				final Handler handtime= new Handler()
 					{
 						public void handleMessage(Message msg)
 							{
-								simu.step1();
+								simu.updtTimers();
+							}
+					};
+				
+				final Handler handcpu= new Handler()
+					{
+						public void handleMessage(Message msg)
+							{
+								simu.step();
 							}
 					};
 
 				// On cree un service de timer qui envoie des messages pour signaler l'activite
-				TimerTask tasktimer1 ;
-				tasktimer1 = new TimerTask()
+				TimerTask tasktime = new TimerTask()
 				{
 					public void run()
 					{
-						handler.sendEmptyMessage(0);
+						handtime.sendEmptyMessage(0);
 					}
 				};
 				
-				Timer timer = new Timer() ;
-				timer.scheduleAtFixedRate(tasktimer1,0,300) ;
-
+				TimerTask taskcpu = new TimerTask()
+				{
+					public void run()
+					{
+						handcpu.sendEmptyMessage(0);
+					}
+				};
 				
-
+				Timer timer60hz = new Timer() ;
+				timer60hz.scheduleAtFixedRate(tasktime,0,500) ;
+								
+				Timer timercpu = new Timer() ;
+				timercpu.scheduleAtFixedRate(taskcpu,0,100) ;
 		}
 }
