@@ -13,6 +13,14 @@ RES_OUTPUT_FILE=$(BUILD_DIR)/res
 ANDROID_MANIFEST=AndroidManifest.xml
 PACKAGE=SESI.chip8
 
+SRC=src/SESI/chip8
+JFILES1=MAIN_CFILES     = $(foreach d,$(SRC)/,$(wildcard $(d)/*.java))
+JFILES2=MAIN_CFILES     = $(foreach d,$(SRC)/utils/,$(wildcard $(d)/*.java))
+JFILES3=MAIN_CFILES     = $(foreach d,$(SRC)/utils/screen/,$(wildcard $(d)/*.java))
+JFILES4=MAIN_CFILES     = $(foreach d,$(SRC)/simu/,$(wildcard $(d)/*.java))
+
+JAVAFILES=$(JFILES1) $(JFILES2) $(JFILES3) $(JFILES4)
+
 APP_NAME=app
 
 JAVA_COMPILER=javac
@@ -25,7 +33,7 @@ $(BUILD_DIR)/$(APP_NAME).apk : $(DEX_DIR)/$(DEX_FILE)
 $(DEX_DIR)/$(DEX_FILE):JAVATERIES
 	dx --dex --output=$(DEX_DIR)/$(DEX_FILE) $(CLASS_DIR)
 
-JAVATERIES:AAPTERIES
+JAVATERIES:AAPTERIES $(JAVA_FILES)
 	$(JAVA_COMPILER) -classpath $(ANDROID_JAR) -d $(CLASS_DIR) $(JAVA_SRC) $(BUILD_DIR)/R.java
 
 AAPTERIES:$(ANDROID_MANIFEST)
