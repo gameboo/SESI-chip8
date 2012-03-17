@@ -62,7 +62,7 @@ public class Chip8Simu
 	public void step()
 	{
 		int instruction ;
-		int op,nnn,x,y,z,kk ;
+		int op,nnn,nn,x,y,z,kk ;
 		int tmp ;
 		byte[] spritebuff ;
 		
@@ -71,10 +71,15 @@ public class Chip8Simu
 
 		op  =(instruction & 0xF000) >> 12 ;
 		nnn = instruction & 0x0FFF;
+		nn  = instruction & 0x00FF;
 		x   = instruction & 0x0F00;
 		y   = instruction & 0x00F0;
 		z   = instruction & 0x000F;
 		kk  = instruction & 0x00FF;
+		
+		// Passage a l'instruction suivante
+		_PC = _PC + 2 ;
+
 		switch (op)
 		{
 			case 0 :	if (nnn == 0x0E0) {_screen.clear() ;}	// Clear Screen	}
@@ -162,7 +167,24 @@ public class Chip8Simu
 							if (false == _kb.isButtonPressed(_V[x])) { _PC = (_PC + 2) & 0xFFFF ;}
 						}
 						break ;
-			case 0xF :	_I = nnn ;
+			case 0xF :	switch(nn)				// Plusieurs operateurs
+						{
+							case 0x07: _V[x] = (short) (_DT&0xFF) ; break ; // GET DELAY TIMER VALUE
+							case 0x0A: tmp = _kb.isSomeButtonPressed();		// WAIT KEY
+										if (tmp == -1) {_PC=_PC-2 ;} // On BLOQUE
+										else { _V[x] = (short)(tmp & 0xFF); }
+							case 0x15: _DT = _V[x] ;	// SET DT
+							case 0x18: _ST = _V[x] ;	// SET ST
+							case 0x1E: _I = (_I+_V[x]) & 0xFFFF; // I = I + V[x]
+							case 0x29: _I = (_V[x] * 5) & 0xFFFF ; // I=Digit de VX
+							case 0x33:	_mem.writeAt(_I,(short)((_V[x] / 100) & 0xFF)) ;
+										_mem.writeAt(_I+1,(short)(((_V[x]%100)/ 10) & 0xFF)) ;
+										_mem.writeAt(_I+2,(short)((_V[x]%10) & 0xFF)) ;
+									
+							case 0x55:
+							case 0x65:break ;
+							default:break ; // Instruction non geree
+						};
 						break ;
 
 

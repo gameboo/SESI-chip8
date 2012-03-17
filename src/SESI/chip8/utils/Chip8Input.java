@@ -38,4 +38,14 @@ public class Chip8Input
 		}
 		return false;
 	}
+	
+	public int isSomeButtonPressed()
+	{
+		int i ;
+		for (i=0;i<16;i++)
+		{
+			if (button[i]) return i ;
+		}
+		return -1 ;
+	}
 }
