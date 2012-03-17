@@ -10,6 +10,7 @@ public class Chip8Simu
 	// Pour Test, a supprimer ensuite
 	private int _alive ;
 	private int _alive2 ;
+	private FontSet _fonts ;
 	
 	// Delay and Sound Timers
 	private int _DT ;
@@ -17,33 +18,6 @@ public class Chip8Simu
 
 	private Memory _mem ;
 
-
-
-	byte chip8_fontset[][] =
-	{ 
-		{(byte)0xF0, (byte)0x90, (byte)0x90, (byte)0x90, (byte)0xF0}, // 0
-		{(byte)0x20, (byte)0x60, (byte)0x20, (byte)0x20, (byte)0x70}, // 1
-		{(byte)0xF0, (byte)0x10, (byte)0xF0, (byte)0x80, (byte)0xF0}, // 2
-		{(byte)0xF0, (byte)0x10, (byte)0xF0, (byte)0x10, (byte)0xF0}, // 3
-		{(byte)0x90, (byte)0x90, (byte)0xF0, (byte)0x10, (byte)0x10}, // 4
-		{(byte)0xF0, (byte)0x80, (byte)0xF0, (byte)0x10, (byte)0xF0}, // 5
-		{(byte)0xF0, (byte)0x80, (byte)0xF0, (byte)0x90, (byte)0xF0}, // 6
-		{(byte)0xF0, (byte)0x10, (byte)0x20, (byte)0x40, (byte)0x40}, // 7
-		{(byte)0xF0, (byte)0x90, (byte)0xF0, (byte)0x90, (byte)0xF0}, // 8
-		{(byte)0xF0, (byte)0x90, (byte)0xF0, (byte)0x10, (byte)0xF0}, // 9
-		{(byte)0xF0, (byte)0x90, (byte)0xF0, (byte)0x90, (byte)0x90}, // A
-		{(byte)0xE0, (byte)0x90, (byte)0xE0, (byte)0x90, (byte)0xE0}, // B
-		{(byte)0xF0, (byte)0x80, (byte)0x80, (byte)0x80, (byte)0xF0}, // C
-		{(byte)0xE0, (byte)0x90, (byte)0x90, (byte)0x90, (byte)0xE0}, // D
-		{(byte)0xF0, (byte)0x80, (byte)0xF0, (byte)0x80, (byte)0xF0}, // E
-		{(byte)0xF0, (byte)0x80, (byte)0xF0, (byte)0x80, (byte)0x80}, // F
-		{(byte)0x80},  // pixel gauche
-		{(byte)0xFF},  // ligne pleine
-		{(byte)0xC3, (byte)0x24, (byte)0x5A, (byte)0xFF,
-		 (byte)0xFF, (byte)0x7E, (byte)0x81, (byte)0x66},		// Surprise 8x8
-		{(byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
-		 (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00}		// Blank 8x8
-	};
 	private Sprite ERR1 = new Sprite(5) ;
 	private Sprite ERR2 = new Sprite(5) ;
 	private Chip8Screen _screen ;
@@ -53,14 +27,15 @@ public class Chip8Simu
 		// Tests
 		_alive=0;
 		_alive2=0;
+		_fonts = new FontSet() ;
 		
 		// Initialisation des variables CHIP8
 		_DT = 0 ;
 		_ST = 0 ;
 		_mem = new Memory() ;
 
-		ERR1.setMatrix(chip8_fontset[0x12]);
-		ERR2.setMatrix(chip8_fontset[0x13]);
+		ERR1.setMatrix(_fonts.chip8_fontset[0x12]);
+		ERR2.setMatrix(_fonts.chip8_fontset[0x13]);
 
 		_screen = screen ;
 	}
