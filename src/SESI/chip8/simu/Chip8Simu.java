@@ -56,10 +56,36 @@ public class Chip8Simu
 	/* Un appel a cette fonction execute une instruction du programme chip8 */
 	public void step()
 	{
-		short op ;
+		int instruction ;
+		int op ;
+		int nnn ;
+
 		Sprite tmp ;
 		
-		op = 0 ;
+		instruction = 0 ;
+
+		op = (instruction & 0xF000) >> 12 ;
+		nnn = instruction & 0x0FFF;
+		switch (op)
+		{
+			case 0 :	if (nnn == 0x0E0) {_screen.clear() ;}	// Clear Screen	}
+						else if (nnn == 0x0EE)					// Return from subroutine
+						{
+							if (_SP > 0)
+							{
+								_PC = _stack[_SP] ;
+								_SP--;
+							}
+						}
+						// else : obsolete routine, just ignore
+						break ;
+			default:
+						break; // Probleme si on arrive dans ce cas
+					
+		}
+
+		
+
 
 		// Pour test uniquement
 		if (_alive == 0) {
