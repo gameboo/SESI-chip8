@@ -4,6 +4,12 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+	<TextView
+		android:id="@+id/selectGame"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:text="@string/selectGame"/>
+
 	<ListView
         android:id="@+id/gameListView"
         android:layout_width="match_parent"
@@ -12,7 +18,13 @@
     <requestFocus />
     </ListView>
 
-    <Spinner
+	<TextView
+		android:id="@+id/selectGameScreen"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:text="@string/selectGameScreen"/>
+    
+	<Spinner
         android:id="@+id/screenSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

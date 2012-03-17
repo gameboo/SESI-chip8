@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, Chip8Activity!</string>
     <string name="app_name">Chip8</string>
-    <string name="pacourir">Entrez le chemin absolut du fichier</string>
-    <string name="screenPrompt">Select screen type</string>
+    <string name="selectGame">Select your game</string>
+    <string name="selectGameScreen">Select your screen type</string>
+    <string name="screenPrompt">Screen type</string>
 	<string-array name="screenType">
         <item>BasicScreen</item>
         <item>GLScreen</item>

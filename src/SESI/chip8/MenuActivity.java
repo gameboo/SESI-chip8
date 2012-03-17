@@ -30,10 +30,11 @@ public class MenuActivity extends Activity implements OnItemSelectedListener
 				ListView gameListView = (ListView) findViewById(R.id.gameListView);
 				try
 				{
-//debug
-for(String name:assetManager.list("roms")){
-     Log.v("fichier : ",name);    
-}
+						//debug
+						for(String name:assetManager.list("roms"))
+						{
+								Log.v("fichier : ",name);    
+						}
 						gameListView.setAdapter(new ArrayAdapter<String>(this, R.layout.gamelistentry,assetManager.list("roms")));
 				}
 				catch (IOException e)
@@ -41,7 +42,7 @@ for(String name:assetManager.list("roms")){
 						// handle
 				}				
 				// spinner screen
-				Spinner screenSpinner = (Spinner) findViewById(R.id.screenSpinner);
+				final Spinner screenSpinner = (Spinner) findViewById(R.id.screenSpinner);
 				ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 								this, R.array.screenType, android.R.layout.simple_spinner_item);
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -50,9 +51,12 @@ for(String name:assetManager.list("roms")){
 				Button go = (Button) findViewById(R.id.buttonGo);
 				go.setOnClickListener(new View.OnClickListener()
 								{
-								public void onClick(View view) {
+								public void onClick(View view)
+								{
 								Intent myIntent = new Intent(view.getContext(), GameActivity.class);
-								//Intent myIntent = new Intent(view.getContext(), SESIChip8.class);
+								Bundle myBunble = new Bundle();
+								myBunble .putString("screenType",screenSpinner.getSelectedItem().toString());
+								myIntent.putExtras(myBunble);
 								startActivityForResult(myIntent, 0);
 								}
 
