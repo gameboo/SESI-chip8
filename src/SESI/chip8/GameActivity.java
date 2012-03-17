@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import java.util.Timer ;
 import java.util.TimerTask ;
@@ -19,7 +21,6 @@ public class GameActivity extends Activity
 {
 		public void onCreate(Bundle savedInstanceState)
 		{
-			int i ;
 				super.onCreate(savedInstanceState);
 				// make it fullscreen !!! :p
 				requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -49,20 +50,33 @@ public class GameActivity extends Activity
 				lay.addView(screen);
 				lay.addView(inputView);
 				setContentView(lay);
+
 				
 				// test //
 				final Chip8Simu simu = new Chip8Simu((Chip8Screen)screen,input) ;
-
-				Timer timer = new Timer() ;
 				
-				TimerTask workasshole ;
-				workasshole = new TimerTask() {
-					public void run() {
-						simu.step1() ;
+				// Mise en place d'un Handler pour recuperer les messages
+
+				final Handler handler = new Handler()
+					{
+						public void handleMessage(Message msg)
+							{
+								simu.step1();
+							}
+					};
+
+				// On cree un service de timer qui envoie des messages pour signaler l'activite
+				TimerTask tasktimer1 ;
+				tasktimer1 = new TimerTask()
+				{
+					public void run()
+					{
+						handler.sendEmptyMessage(0);
 					}
 				};
-
-					timer.scheduleAtFixedRate(workasshole,0,300) ;
+				
+				Timer timer = new Timer() ;
+				timer.scheduleAtFixedRate(tasktimer1,0,300) ;
 
 				
 

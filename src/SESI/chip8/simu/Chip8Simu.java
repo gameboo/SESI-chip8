@@ -68,10 +68,11 @@ public class Chip8Simu
 	{
 		if (_chip8time == 0) {
 			_screen.drawSprite(3,3, ERR1);
+			_chip8time = 1 ;
 		} else {
-			_screen.drawSprite(3,3, ERR2);
+			_screen.drawSprite(4,4, ERR2);
+			_chip8time = 0 ;
 		}
-		_chip8time = (_chip8time + 1) % 1 ;
 	}
 		
 	public void step2()
