@@ -16,6 +16,7 @@ public class Chip8Simu
 	private FontSet _fonts ;
 	private Sprite ERR1 = new Sprite(5) ;
 	private Sprite ERR2 = new Sprite(5) ;
+	private int _time ;
 
 	// Delay and Sound Timers
 	private int _DT ;
@@ -39,7 +40,7 @@ public class Chip8Simu
 
 	public Chip8Simu(Chip8Screen screen, Chip8Input kb,InputStream file)
 	{
-		Log.v("@GameActivity","SIMU : ETAPE 1") ;
+		Log.v("@GameActivity","SIMU Constructeur commence !") ;
 		int tmp,i ;
 		// Tests
 		_alive=0;
@@ -47,32 +48,26 @@ public class Chip8Simu
 		_fonts = new FontSet() ;
 		ERR1.setMatrix(_fonts.chip8_fontset[0x12]);
 		ERR2.setMatrix(_fonts.chip8_fontset[0x13]);
-		Log.v("@GameActivity","SIMU : ETAPE 2") ;
+		_time = 0 ;
 		
 		// Initialisation des variables CHIP8
 		_DT = 0 ;
 		_ST = 0 ;
 		_mem = new Memory() ;
-		Log.v("@GameActivity","SIMU : ETAPE 3") ;
 		_mem.init() ;
 		_screen = screen ;
 		_kb = kb ;
-		Log.v("@GameActivity","SIMU : ETAPE 4") ;
 
 		_PC = 0x200 ;
 		_V = new short[0x10] ;
 		_stack = new int[0x10] ;		// 16 niveaux de pile
 		_rand = new Random() ;
-		Log.v("@GameActivity","SIMU : ETAPE 5") ;
 
 		// On copie le programme dans la memoire a partir de l'adresse 0x200
-		Log.v("@GameActivity","SIMU : ETAPE 6") ;
 		show_life(8,0,ERR1);
-		Log.v("@GameActivity","SIMU : ETAPE 7") ;
 		try {tmp = file.read() ;}
 		catch (Exception e){tmp=-1;}
 		i = 0x200 ;
-		Log.v("@GameActivity","SIMU : ETAPE 8") ;
 		while (tmp != -1) {
 			Log.v("@GameActivity","SIMU PROGRAMME ECRITURE "+Integer.toHexString(i)+" DE "+Integer.toHexString(tmp)) ;
 			_mem.writeAt(i,(short) tmp) ;
@@ -80,13 +75,12 @@ public class Chip8Simu
 			try {tmp = file.read() ;}
 			catch (Exception e){tmp=-1;}
 		}		
-		Log.v("@GameActivity","SIMU : ETAPE 9") ;
+		Log.v("@GameActivity","SIMU Constructeur fini !") ;
 	}
 	
 	/* Un appel a cette fonction execute une instruction du programme chip8 */
 	public void step()
 	{
-		Log.v("@GameActivity","SIMU STEP Starting. PC="+_PC) ;
 		int instruction ;
 		int op,nnn,nn,x,y,z,kk ;
 		int tmp ;
@@ -115,7 +109,8 @@ public class Chip8Simu
 		// Passage a l'instruction suivante
 		_PC = _PC + 2 ;
 		
-		Log.v("@GameActivity","SIMU STEP INSTRUCTION="+Integer.toHexString(instruction)) ;
+		Log.v("@GameActivity","SIMU STEP "+_time+" PC="+Integer.toHexString(_PC)+", INSTRUCTION="+Integer.toHexString(instruction)) ;
+		_time++ ;
 
 		switch (op)
 		{
@@ -131,7 +126,7 @@ public class Chip8Simu
 						}
 						// else : obsolete routine, just ignore
 						break ;
-			case 1 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 1 JUMP");
+			case 1 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 1 JUMP "+Integer.toHexString(nnn));
 						_PC = nnn ;		// JUMP
 						break ;
 			case 2 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 2 CALL") ;
@@ -151,7 +146,7 @@ public class Chip8Simu
 			case 5 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 5 SKIP ON EQUAL REGISTERS") ;
 						if (_V[x] == _V[y]) { _PC = (_PC + 2) & 0xFFFF ; } // SKIP ON EQUAL REGISTERS
 						break ;
-			case 6 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 6 LD IMM");
+			case 6 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 6 LD IMM"+Integer.toHexString(kk));
 						_V[x] = (short) kk ;	// LD Imm
 						break ;
 			case 7 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 7 ADD IMM");
@@ -190,7 +185,7 @@ public class Chip8Simu
 			case 9 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 9 SKIP ON DIFFERENT REGISTERS") ;
 						if (_V[x] != _V[y]) { _PC = (_PC + 2) & 0xFFFF ; } // SKIP ON DIFFERENT REGISTERS
 						break ;
-			case 0xA :	Log.v("@GameActivity","SIMU STEP INSTRUCTION A LD DANS I") ;
+			case 0xA :	Log.v("@GameActivity","SIMU STEP INSTRUCTION A LD DANS I "+Integer.toHexString(nnn)) ;
 						_I = nnn ;		// LD dans I
 						break ;
 			case 0xB :	Log.v("@GameActivity","SIMU STEP INSTRUCTION B BRANCH") ;
