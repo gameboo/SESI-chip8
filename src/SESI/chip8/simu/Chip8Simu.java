@@ -275,7 +275,7 @@ switch(nn)				// Plusieurs operateurs
 
 	public void show_life(int x, int y,Sprite s)
 	{
-			_screen.drawSprite(x,y,s);
+			//_screen.drawSprite(x,y,s);
 	}
 
 
