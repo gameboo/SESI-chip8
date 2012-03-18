@@ -30,7 +30,7 @@ class Camera
         _uz = 0.0f;
         
         _zoomFactor = 1.0f;
-        _fieldOfView = 45.0f;
+        _fieldOfView = 90.0f;
         _aspectRatio = 1.0f;
         _zNear = 0.5f;
         _zFar = 100.0f;
