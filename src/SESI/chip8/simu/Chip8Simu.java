@@ -137,7 +137,7 @@ public class Chip8Simu
 							_PC = nnn ;
 						}
 						break ;
-			case 3 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 3 SKIP ON EQUAL") ;
+			case 3 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 3 SKIP ON EQUAL X="+x+", V[x]="+_V[x]+",kk="+kk) ;
 						if (_V[x] == kk) { _PC = ((_PC + 2) & 0xFFFF) ; } // SKIP ON EQUAL
 						break ;
 			case 4 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 4 SKIP ON DIFFERENT") ;
@@ -217,11 +217,13 @@ if (z == 0xE)			// SKIP if KEY PRESSED OR NOT
 			case 0xF :	Log.v("@GameActivity","SIMU STEP INSTRUCTION F VARIOUS OPERATORS") ;
 switch(nn)				// Plusieurs operateurs
 						{
-							case 0x07: _V[x] = (short) (_DT&0xFF) ; break ; // GET DELAY TIMER VALUE
+							case 0x07:	Log.v("@GameActivity","SIMU STEP INSTRUCTION F GET DELAY TIMER VALUE X="+x+", DT="+_DT) ;
+										_V[x] = (short) (_DT&0xFF) ; break ; // GET DELAY TIMER VALUE
 							case 0x0A: tmp = _kb.isSomeButtonPressed();		// WAIT KEY
 										if (tmp == -1) {_PC=_PC-2 ;} // On BLOQUE
 										else { _V[x] = (short)(tmp & 0xFF); }
-							case 0x15: _DT = _V[x] ; break ;	// SET DT
+							case 0x15:	Log.v("@GameActivity","SIMU STEP INSTRUCTION F SET DELAY TIMER VALUE X="+x+", DT="+_DT+", V[x]="+_V[x]) ;
+										_DT = _V[x] ; break ;	// SET DT
 							case 0x18: _ST = _V[x] ; break ;	// SET ST
 							case 0x1E: _I = (_I+_V[x]) & 0xFFFF; break ; // I = I + V[x]
 							case 0x29: _I = (_V[x] * 5) & 0xFFFF ; break ;// I=Digit de VX
@@ -259,7 +261,7 @@ switch(nn)				// Plusieurs operateurs
 	{
 		Sprite tmp ;
 		if (_DT > 0) {_DT--;}
-		if (_ST > 0) {_DT--;}
+		if (_ST > 0) {_ST--;}
 
 		// Pour test uniquement
 		if (_alive2 == 0) {
