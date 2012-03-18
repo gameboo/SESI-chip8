@@ -101,15 +101,18 @@ public class Chip8Simu
 		op  =(instruction & 0xF000) >> 12 ;
 		nnn = instruction & 0x0FFF;
 		nn  = instruction & 0x00FF;
-		x   = instruction & 0x0F00 >> 8;
-		y   = instruction & 0x00F0 >> 4;
+		// x prends parfois des valeurs etranges avec cette ligne :
+		// x   = instruction & 0x0F00 >> 8;
+		// y   = instruction & 0x00F0 >> 4;
+		x   = (instruction >> 8) & 0xF;
+		y   = (instruction >> 4) & 0xF;
 		z   = instruction & 0x000F;
 		kk  = instruction & 0x00FF;
 		
-		// Passage a l'instruction suivante
-		_PC = _PC + 2 ;
 		
 		Log.v("@GameActivity","SIMU STEP "+_time+" PC="+Integer.toHexString(_PC)+", INSTRUCTION="+Integer.toHexString(instruction)) ;
+		// Passage a l'instruction suivante
+		_PC = _PC + 2 ;
 		_time++ ;
 
 		switch (op)
@@ -129,7 +132,7 @@ public class Chip8Simu
 			case 1 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 1 JUMP "+Integer.toHexString(nnn));
 						_PC = nnn ;		// JUMP
 						break ;
-			case 2 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 2 CALL") ;
+			case 2 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 2 CALL "+nnn) ;
 						if (_SP < 0x10)	// CALL
 						{
 							_SP++;
@@ -146,7 +149,7 @@ public class Chip8Simu
 			case 5 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 5 SKIP ON EQUAL REGISTERS") ;
 						if (_V[x] == _V[y]) { _PC = (_PC + 2) & 0xFFFF ; } // SKIP ON EQUAL REGISTERS
 						break ;
-			case 6 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 6 LD IMM"+Integer.toHexString(kk));
+			case 6 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 6 LD IMM V["+x+"]=0x"+Integer.toHexString(kk));
 						_V[x] = (short) kk ;	// LD Imm
 						break ;
 			case 7 :	Log.v("@GameActivity","SIMU STEP INSTRUCTION 7 ADD IMM");
