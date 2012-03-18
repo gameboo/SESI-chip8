@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
+	android:weightSum="7"
     android:orientation="vertical" >
 
 	<TextView
@@ -12,8 +13,9 @@
 
 	<ListView
         android:id="@+id/gameListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+		android:layout_height="0dp"
+	    android:layout_width="fill_parent"
+    	android:layout_weight="5"
 	>
     <requestFocus />
     </ListView>
@@ -27,13 +29,15 @@
 	<Spinner
         android:id="@+id/screenSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+    	android:layout_weight="1"
 		android:prompt="@string/screenPrompt" />
 
     <Button
         android:id="@+id/buttonGo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+    	android:layout_weight="1"
         android:text="Go!" />
 
 </LinearLayout>
