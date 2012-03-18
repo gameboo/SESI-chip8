@@ -10,139 +10,69 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.content.Context;
 import android.app.Activity;
+import android.graphics.Color;
 
 import android.util.Log; //debug purpose
 
-public class InputView extends RelativeLayout implements View.OnTouchListener
+public class InputView extends RelativeLayout
 {
 		Chip8Input kb;
+		Button[] button;
+		int nbButton = 16;
+
+		private class ButtonHandler implements OnTouchListener
+		{
+				private int _b;
+				private Chip8Input _kb;
+				public ButtonHandler(Chip8Input kb, int b)
+				{
+						_b = b;
+						_kb = kb;
+				}
+				public boolean onTouch(View v, MotionEvent e)
+				{
+						switch(e.getAction())
+						{
+								case MotionEvent.ACTION_DOWN :
+										v.setBackgroundColor(Color.argb(100,255,0,0));
+										_kb.pressButton(_b);
+										break;
+								case MotionEvent.ACTION_UP :
+										v.setBackgroundColor(Color.argb(50,100,100,100));
+										_kb.releaseButton(_b);
+										break;
+						}
+						return true;
+				}
+		}
+
 		public InputView(Context context, Chip8Input input)
 		{
 				super(context);
 				LayoutInflater inflater = LayoutInflater.from(context);
 				inflater.inflate(R.layout.inputview,this);
 				kb = input;
-				/*
-				   for(int i = 0; i<nbButton; i++)
-				   {
-				   button[i] = new Button(context);
-				   button[i].setText(Integer.toString(i));
-				   addView(button[i]);
-				   }
-				 */
-		}
-
-		public boolean onTouch(View v, MotionEvent event)
-		{
-				switch(event.getAction())
+				button = new Button[nbButton];
+				button[0] = (Button) findViewById(R.id.b0);
+				button[1] = (Button) findViewById(R.id.b1);
+				button[2] = (Button) findViewById(R.id.b2);
+				button[3] = (Button) findViewById(R.id.b3);
+				button[4] = (Button) findViewById(R.id.b4);
+				button[5] = (Button) findViewById(R.id.b5);
+				button[6] = (Button) findViewById(R.id.b6);
+				button[7] = (Button) findViewById(R.id.b7);
+				button[8] = (Button) findViewById(R.id.b8);
+				button[9] = (Button) findViewById(R.id.b9);
+				button[10] = (Button) findViewById(R.id.ba);
+				button[11] = (Button) findViewById(R.id.bb);
+				button[12] = (Button) findViewById(R.id.bc);
+				button[13] = (Button) findViewById(R.id.bd);
+				button[14] = (Button) findViewById(R.id.be);
+				button[15] = (Button) findViewById(R.id.bf);
+				for(int i = 0; i<nbButton; i++)
 				{
-						case MotionEvent.ACTION_DOWN :
-								switch(v.getId())
-								{
-										case R.id.b0:
-												kb.pressButton(0x0);	
-												break;
-										case R.id.b1:
-												kb.pressButton(0x1);	
-												break;
-										case R.id.b2:
-												kb.pressButton(0x2);	
-												break;
-										case R.id.b3:
-												kb.pressButton(0x3);	
-												break;
-										case R.id.b4:
-												kb.pressButton(0x4);	
-												break;
-										case R.id.b5:
-												kb.pressButton(0x5);	
-												break;
-										case R.id.b6:
-												kb.pressButton(0x6);	
-												break;
-										case R.id.b7:
-												kb.pressButton(0x7);	
-												break;
-										case R.id.b8:
-												kb.pressButton(0x8);	
-												break;
-										case R.id.b9:
-												kb.pressButton(0x9);	
-												break;
-										case R.id.ba:
-												kb.pressButton(0xA);	
-												break;
-										case R.id.bb:
-												kb.pressButton(0xB);	
-												break;
-										case R.id.bc:
-												kb.pressButton(0xC);	
-												break;
-										case R.id.bd:
-												kb.pressButton(0xD);	
-												break;
-										case R.id.be:
-												kb.pressButton(0xE);	
-												break;
-										case R.id.bf:
-												kb.pressButton(0xF);	
-												break;
-								}
-								break;
-						case MotionEvent.ACTION_UP :
-								switch(v.getId())
-								{
-										case R.id.b0:
-												kb.releaseButton(0x0);	
-												break;
-										case R.id.b1:
-												kb.releaseButton(0x1);	
-												break;
-										case R.id.b2:
-												kb.releaseButton(0x2);	
-												break;
-										case R.id.b3:
-												kb.releaseButton(0x3);	
-												break;
-										case R.id.b4:
-												kb.releaseButton(0x4);	
-												break;
-										case R.id.b5:
-												kb.releaseButton(0x5);	
-												break;
-										case R.id.b6:
-												kb.releaseButton(0x6);	
-												break;
-										case R.id.b7:
-												kb.releaseButton(0x7);	
-												break;
-										case R.id.b8:
-												kb.releaseButton(0x8);	
-												break;
-										case R.id.b9:
-												kb.releaseButton(0x9);	
-												break;
-										case R.id.ba:
-												kb.releaseButton(0xA);	
-												break;
-										case R.id.bb:
-												kb.releaseButton(0xB);	
-												break;
-										case R.id.bc:
-												kb.releaseButton(0xC);	
-												break;
-										case R.id.bd:
-												kb.releaseButton(0xD);	
-												break;
-										case R.id.be:
-												kb.releaseButton(0xE);	
-												break;
-										case R.id.bf:
-												kb.releaseButton(0xF);	
-												break;
-								}
-								break;
+						button[i].setBackgroundColor(Color.argb(50,100,100,100));
+						button[i].setOnTouchListener(new ButtonHandler(kb,i));
 				}
-				return true;
 		}
 }

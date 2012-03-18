@@ -1,5 +1,8 @@
 package SESI.chip8.utils;
 
+//debug
+import android.util.Log;
+
 public class Chip8Input
 {
 	private int nbButton = 16;
@@ -16,6 +19,8 @@ public class Chip8Input
 	
 	public void pressButton(int b)
 	{
+		// debug
+		Log.v("button pressed : ", Integer.toString(b));
 		if(b>=0 && b<=16)
 		{
 			button[b]=true;
@@ -24,6 +29,8 @@ public class Chip8Input
 
 	public void releaseButton(int b)
 	{
+		// debug
+		Log.v("button released : ", Integer.toString(b));
 		if(b>=0 && b<=16)
 		{
 			button[b]=false;
