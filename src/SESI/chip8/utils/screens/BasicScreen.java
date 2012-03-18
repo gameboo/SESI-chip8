@@ -116,12 +116,12 @@ public class BasicScreen extends View implements Chip8Screen
 						byte[] spriteMatrix = sprite.getMatrix();
 						for(int j = y; j < (y+spriteMatrix.length); j++) // for each line (of the sprite)
 						{
-								if(j >= _nbPixelHeight) break; // overflow par le bas
+								//if(j >= _nbPixelHeight) break; // overflow par le bas
 								byte currentSpriteLine = spriteMatrix[j-y]; // récupérer la ligne du sprite
 								for(int i = x; i < x+8; i++) // for each column (of the sprite)
 								{
 										Log.v("DEBUG_SESIchip8_BasicScreen >>> ","pixel("+i+","+j+") ==> in sprite ("+(i-x)+","+(j-y)+")");
-										if(i >= _nbPixelWidth) break; // overflow par la droite
+										//if(i >= _nbPixelWidth) break; // overflow par la droite
 										if((currentSpriteLine & (1 << (7-(i-x)))) == 0) // si msb = leftmost pixel
 										{
 												// pixel du sprite = 0 => 0 xor X = X => rien ne se passe, ret = false
@@ -129,14 +129,14 @@ public class BasicScreen extends View implements Chip8Screen
 										else
 										{
 												// pixel du sprite = 1 => 1 xor X = ~X => inversion des couleurs, ret = true si passage a noir
-												if(_colorMatrix[i][j] == Color.WHITE)
+												if(_colorMatrix[i%_nbPixelWidth][j%_nbPixelHeight] == Color.WHITE)
 												{
-														_colorMatrix[i][j] = Color.BLACK;
+														_colorMatrix[i%_nbPixelWidth][j%_nbPixelHeight] = Color.BLACK;
 														ret = true;
 												}
 												else
 												{
-														_colorMatrix[i][j] = Color.WHITE;
+														_colorMatrix[i%_nbPixelWidth][j%_nbPixelHeight] = Color.WHITE;
 												}
 										}
 								}

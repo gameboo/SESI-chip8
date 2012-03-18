@@ -201,11 +201,11 @@ public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, C
 						byte[] spriteMatrix = sprite.getMatrix();
 						for(int j = y; j < (y+spriteMatrix.length); j++) // for each line (of the sprite)
 						{
-								if(j >= _height) break; // overflow par le bas
+								//if(j >= _height) break; // overflow par le bas
 								byte currentSpriteLine = spriteMatrix[j-y]; // récupérer la ligne du sprite
 								for(int i = x; i < x+8; i++) // for each column (of the sprite)
 								{
-										if(i >= _width) break; // overflow par la droite
+										//if(i >= _width) break; // overflow par la droite
 										if((currentSpriteLine & (1 << (7-(i-x)))) == 0) // si msb = leftmost pixel
 										{
 												// pixel du sprite = 0 => 0 xor X = X => rien ne se passe, ret = false
@@ -213,15 +213,15 @@ public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, C
 										else
 										{
 												// pixel du sprite = 1 => 1 xor X = ~X => inversion des couleurs, ret = true si passage a noir
-												if(_pixel[i][j].getDrawingState() == true)
+												if(_pixel[i%_width][j%_height].getDrawingState() == true)
 												{
-														_pixel[i][j].setDrawingState(false);
+														_pixel[i%_width][j%_height].setDrawingState(false);
 														ret = true;
 												}
 												else
 												{
-														_pixel[i][j].setDrawingState(true);
-														_pixel[i][j].setRGBA(1.0f,1.0f,1.0f,1.0f);
+														_pixel[i%_width][j%_height].setDrawingState(true);
+														_pixel[i%_width][j%_height].setRGBA(1.0f,1.0f,1.0f,1.0f);
 												}
 										}
 								}

@@ -122,9 +122,9 @@ public class GameActivity extends Activity
 				};
 
 				Timer timer60hz = new Timer() ;
-				timer60hz.scheduleAtFixedRate(tasktime,0,1000) ;
+				timer60hz.scheduleAtFixedRate(tasktime,0,17) ;
 
 				Timer timercpu = new Timer() ;
-				timercpu.scheduleAtFixedRate(taskcpu,0,200) ;
+				timercpu.scheduleAtFixedRate(taskcpu,0,10) ;
 		}
 }
