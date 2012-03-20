@@ -125,6 +125,6 @@ public class GameActivity extends Activity
 				timer60hz.scheduleAtFixedRate(tasktime,0,17) ;
 
 				Timer timercpu = new Timer() ;
-				timercpu.scheduleAtFixedRate(taskcpu,0,10) ;
+				timercpu.scheduleAtFixedRate(taskcpu,0,5) ;
 		}
 }

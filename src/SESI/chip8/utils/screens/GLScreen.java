@@ -73,7 +73,8 @@ public class GLScreen extends GLSurfaceView implements GLSurfaceView.Renderer, C
 						}
 				}
 				// init camera
-				_camera = new Camera(0.0f, 0.0f, 50.0f);
+				//_camera = new Camera(0.0f, 0.0f, 50.0f);
+				_camera = new Camera(0.0f, 0.0f, 25.0f);
 		}
 
 		// tests
